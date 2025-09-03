@@ -1,0 +1,173 @@
+{
+	"meta": {
+		"generatedAt": "2025-09-02T16:27:48.377Z",
+		"tasksAnalyzed": 20,
+		"totalTasks": 20,
+		"analysisCount": 20,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Setup Project Repository",
+			"complexityScore": 3,
+			"recommendedSubtasks": 2,
+			"expansionPrompt": "Break down the setup process into creating the Git repository and initializing the Next.js application.",
+			"reasoning": "The task involves basic setup steps that can be easily divided into creating the repository and initializing the application."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Configure Supabase Database",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for creating a Supabase project, configuring the database, and implementing the SQL schema.",
+			"reasoning": "This task requires multiple steps including project creation, database configuration, and schema implementation, making it moderately complex."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Implement User Authentication",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Outline the steps for user signup, email verification, login functionalities, and JWT token management.",
+			"reasoning": "User authentication involves several components and security considerations, thus increasing its complexity."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Create User Roles and Permissions",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Define the steps for implementing role-based access control and managing permissions for different user types.",
+			"reasoning": "This task requires careful planning of roles and permissions, which adds to its complexity."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Develop Onboarding Wizard",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the onboarding process into steps for creating the business, project setup, and data storage.",
+			"reasoning": "The multi-step nature of the onboarding wizard requires multiple components to be developed, increasing complexity."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Implement M1 Foundation Questions Workshop",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Detail the steps for creating each question, ensuring adherence to the six-part framework.",
+			"reasoning": "With 57 questions to develop, this task is complex due to the volume and the need for consistent formatting."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Build Two-Panel Workshop Interface",
+			"complexityScore": 7,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Outline the steps for developing the UI layout, handling user inputs, and implementing real-time updates.",
+			"reasoning": "Creating a dynamic interface with real-time capabilities adds to the complexity of this task."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Integrate OpenRouter API",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for setting up the API client and ensuring it provides relevant AI suggestions.",
+			"reasoning": "Integrating an external API involves understanding its functionality and ensuring correct implementation, adding complexity."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implement Real-Time Collaboration Features",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the steps for enabling real-time updates and managing multiple user interactions.",
+			"reasoning": "Real-time collaboration requires handling concurrent user actions, which increases the complexity of the implementation."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Create Brand Portal Generation Functionality",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Outline the steps for compiling user responses into a brand guide and ensuring real-time updates.",
+			"reasoning": "This task involves data compilation and dynamic updates, which adds to its complexity."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implement PDF and Markdown Export Functionality",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for generating PDF and Markdown exports, including testing the output.",
+			"reasoning": "Export functionality requires careful handling of formats and testing, contributing to its complexity."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Develop AI-Powered Question Assistance",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Outline the steps for implementing AI suggestions for each question type and ensuring context awareness.",
+			"reasoning": "The need for context-aware AI suggestions adds complexity to the implementation of this feature."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Implement Module Dependencies and Progression Logic",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for developing algorithms to manage module dependencies and visualize user progress.",
+			"reasoning": "Creating logic for dependencies and progression requires careful planning and implementation, increasing complexity."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Create Advanced Question Types",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Outline the steps for developing interactive question formats and ensuring they function correctly.",
+			"reasoning": "Implementing advanced question types adds complexity due to the need for interactivity and user engagement."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Automate Competitor and Website Analysis",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for setting up n8n workflows and ensuring accurate report generation.",
+			"reasoning": "Automating workflows requires integration and testing, which contributes to the task's complexity."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "Develop Activation Marketplace",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Outline the steps for implementing the marketplace and ensuring user access to deliverables.",
+			"reasoning": "Creating a marketplace involves multiple components and user interactions, adding to its complexity."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Implement User Feedback and Analytics Tracking",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps for integrating analytics tools and ensuring accurate data collection.",
+			"reasoning": "Setting up analytics tracking requires careful integration and testing, contributing to the task's complexity."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Conduct Performance Testing and Optimization",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Outline the steps for conducting load testing and optimizing database queries.",
+			"reasoning": "Performance testing involves multiple testing scenarios and optimizations, increasing the complexity of the task."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Implement Security Measures and Compliance",
+			"complexityScore": 8,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Detail the steps for implementing security measures and conducting audits for compliance.",
+			"reasoning": "Security implementation is critical and requires thorough planning and testing, making it a complex task."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Prepare for Deployment",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Outline the steps for finalizing configurations and conducting final testing before deployment.",
+			"reasoning": "Preparing for deployment involves multiple final checks and configurations, contributing to its complexity."
+		}
+	]
+}

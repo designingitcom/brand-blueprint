@@ -1,0 +1,43 @@
+# Task ID: 14
+# Title: Create Advanced Question Types
+# Status: pending
+# Dependencies: 6
+# Priority: low
+# Description: Develop interactive question formats beyond text input for richer insights.
+# Details:
+Implement advanced question types such as sliders, card sorting, and scenario branching to enhance user engagement.
+
+# Test Strategy:
+Test advanced question types to ensure they function correctly and gather the intended insights.
+
+# Subtasks:
+## 1. Design Slider Question Type [pending]
+### Dependencies: None
+### Description: Create the design and user interface for the slider question type, allowing users to select a value within a defined range.
+### Details:
+Implement a React component that renders a slider input. Use a library like 'rc-slider' for better UI. Ensure it accepts props for min, max, and step values.
+
+## 2. Implement Slider Logic [pending]
+### Dependencies: 14.1
+### Description: Develop the logic to handle user input from the slider question type and store the selected value.
+### Details:
+Create a state management solution (using React's useState or a context provider) to capture the slider's value. Ensure the value is saved to the appropriate data structure for submission.
+
+## 3. Design Card Sorting Question Type [pending]
+### Dependencies: 14.2
+### Description: Create the design and user interface for the card sorting question type, allowing users to categorize items.
+### Details:
+Implement a React component that displays cards representing items. Users should be able to drag and drop cards into categories. Use a library like 'react-beautiful-dnd' for drag-and-drop functionality.
+
+## 4. Implement Card Sorting Logic [pending]
+### Dependencies: 14.3
+### Description: Develop the logic to handle user input from the card sorting question type and store the categorized items.
+### Details:
+Create a state management solution to capture the sorted categories and items. Ensure the categorized data is saved for submission.
+
+## 5. Develop Scenario Branching Logic [pending]
+### Dependencies: 14.4
+### Description: Implement the logic for scenario branching, allowing users to navigate through different questions based on their previous answers.
+### Details:
+Create a state management solution to track user responses and determine the next question based on predefined branching logic. Use conditional rendering to display the appropriate questions.
+

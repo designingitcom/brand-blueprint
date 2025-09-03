@@ -1,0 +1,52 @@
+{
+  "mcpServers": {
+    "task-master-ai": {
+      "command": "npx",
+      "args": ["-y", "--package=task-master-ai", "task-master-ai"],
+      "env": {
+        "OPENROUTER_API_KEY": "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"
+      }
+    },
+    "claude-flow": {
+      "command": "npx",
+      "args": [
+        "claude-flow@alpha",
+        "mcp",
+        "start"
+      ],
+      "type": "stdio"
+    },
+    "ruv-swarm": {
+      "command": "npx",
+      "args": [
+        "ruv-swarm@latest",
+        "mcp",
+        "start"
+      ],
+      "type": "stdio"
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server@latest",
+        "--supabase-url",
+        "https://xigzapsughpuqjxttsra.supabase.co",
+        "--service-role-key",
+        "YOUR_SERVICE_ROLE_KEY_HERE"
+      ],
+      "type": "stdio"
+    },
+    "postgres-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "type": "stdio",
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://postgres:baE53fb5GNkc*gM@db.xigzapsughpuqjxttsra.supabase.co:5432/postgres"
+      }
+    }
+  }
+}

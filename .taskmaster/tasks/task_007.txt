@@ -1,0 +1,43 @@
+# Task ID: 7
+# Title: Build Two-Panel Workshop Interface
+# Status: pending
+# Dependencies: 6
+# Priority: high
+# Description: Create a two-panel interface for users to answer questions and receive AI assistance.
+# Details:
+Develop a UI with a left panel for user answers and a right panel for AI suggestions, ensuring real-time updates between panels.
+
+# Test Strategy:
+Verify that user inputs and AI suggestions update correctly in real-time.
+
+# Subtasks:
+## 1. Design UI Layout for Two Panels [pending]
+### Dependencies: None
+### Description: Create a wireframe or mockup for the two-panel interface, ensuring that the left panel is designated for user answers and the right panel for AI suggestions.
+### Details:
+Use a design tool like Figma or Adobe XD to create the layout. Ensure that the panels are responsive and visually distinct. Include placeholders for user input and AI output.
+
+## 2. Implement Left Panel for User Input [pending]
+### Dependencies: 7.1
+### Description: Develop the left panel of the interface where users can input their answers. This panel should include a text area and a submit button.
+### Details:
+Use React components to create the left panel. Implement a controlled input for the text area and a button that triggers an event to capture user input.
+
+## 3. Implement Right Panel for AI Suggestions [pending]
+### Dependencies: 7.2
+### Description: Develop the right panel of the interface that displays AI suggestions based on user input.
+### Details:
+Create a React component for the right panel that listens for updates from the left panel. Use state management to display AI suggestions dynamically.
+
+## 4. Establish Real-Time Communication Between Panels [pending]
+### Dependencies: 7.2, 7.3
+### Description: Implement the logic to ensure real-time updates between the left and right panels, allowing for seamless interaction.
+### Details:
+Utilize WebSockets or a similar technology to enable real-time communication. Ensure that when the user submits an answer, the right panel updates with relevant AI suggestions.
+
+## 5. Conduct User Testing and Feedback Session [pending]
+### Dependencies: 7.4
+### Description: Organize a user testing session to gather feedback on the two-panel interface and make necessary adjustments based on user experience.
+### Details:
+Invite a group of users to interact with the interface and provide feedback. Document their experiences and identify areas for improvement.
+
