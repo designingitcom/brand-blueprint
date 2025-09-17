@@ -12,7 +12,10 @@
       "Bash(npm run dev:*)",
       "Bash(pkill:*)",
       "Bash(python3:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [
       "Bash(rm -rf /)",
