@@ -1,48 +1,56 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 9%;
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 9%;
-  --radius: 0.5rem;
+  /* BrandBlueprint light theme - test version */
+  --background: 0 0% 98%; /* #FAFAFA - Light background */
+  --foreground: 0 0% 10%; /* #1A1A1A - Dark text */
+  --card: 0 0% 100%; /* #FFFFFF - White cards */
+  --card-foreground: 0 0% 10%; /* #1A1A1A - Dark text on cards */
+  --popover: 0 0% 100%; /* #FFFFFF - White popover */
+  --popover-foreground: 0 0% 10%; /* #1A1A1A - Dark text on popover */
+  --primary: 48 100% 45%; /* #E6B800 - Slightly darker yellow for accessibility */
+  --primary-foreground: 0 0% 0%; /* Black text on yellow */
+  --secondary: 0 0% 96%; /* #F5F5F5 - Light gray */
+  --secondary-foreground: 0 0% 20%; /* #333333 - Dark gray text */
+  --muted: 0 0% 94%; /* #F0F0F0 - Muted background */
+  --muted-foreground: 0 0% 45%; /* #737373 - Medium gray text */
+  --accent: 48 100% 45%; /* #E6B800 - Same as primary */
+  --accent-foreground: 0 0% 0%; /* Black text on accent */
+  --destructive: 0 84% 60%; /* Keep red for destructive */
+  --destructive-foreground: 0 0% 98%; /* Light text on red */
+  --border: 0 0% 90%; /* #E5E5E5 - Light border */
+  --input: 0 0% 100%; /* #FFFFFF - White input background */
+  --ring: 48 100% 45%; /* #E6B800 - Yellow focus ring */
+  --radius: 1rem; /* 16px for cards */
+
+  /* Status colors */
+  --success: 142 76% 36%; /* Keep green */
+  --warning: 38 92% 50%; /* Keep orange */
+  --info: 217 91% 60%; /* Keep blue */
+  --purple: 262 83% 58%; /* Keep purple */
 }
 
 .dark {
-  --background: 0 0% 4%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 4%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 4%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 64%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62% 30%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 0 0% 83%;
+  /* BrandBlueprint dark theme - original dark theme */
+  --background: 224 19% 7%; /* #0E0E10 */
+  --foreground: 0 0% 95%;
+  --card: 240 6% 10%; /* #17171A */
+  --card-foreground: 0 0% 95%;
+  --popover: 240 6% 10%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 48 100% 50%; /* #FFCC00 - Brand yellow */
+  --primary-foreground: 0 0% 0%;
+  --secondary: 240 7% 17%; /* #2A2A30 */
+  --secondary-foreground: 0 0% 95%;
+  --muted: 240 7% 17%;
+  --muted-foreground: 240 5% 64%;
+  --accent: 48 100% 50%; /* #FFCC00 */
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 95%;
+  --border: 240 7% 17%; /* #2A2A30 */
+  --input: 240 7% 17%;
+  --ring: 48 100% 50%;
 }
 
 @theme inline {

@@ -1,122 +1,134 @@
-'use client'
+'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { User, Session, AuthError } from '@supabase/supabase-js'
-import { getSupabaseClient } from '@/lib/supabase/client'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
+import { User, Session, AuthError } from '@supabase/supabase-js';
+import { getSupabaseClient } from '@/lib/supabase/client';
 
 interface AuthContextType {
-  user: User | null
-  session: Session | null
-  loading: boolean
-  error: AuthError | null
-  signOut: () => Promise<void>
-  refreshSession: () => Promise<void>
+  user: User | null;
+  session: Session | null;
+  loading: boolean;
+  error: AuthError | null;
+  signOut: () => Promise<void>;
+  refreshSession: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
-}
+  return context;
+};
 
 interface AuthProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<AuthError | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<AuthError | null>(null);
 
-  const supabase = getSupabaseClient()
+  const supabase = getSupabaseClient();
 
   useEffect(() => {
     // Get initial session
     const getSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession()
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
         if (error) {
-          console.error('Error getting session:', error)
-          setError(error)
+          console.error('Error getting session:', error);
+          setError(error);
         } else {
-          setSession(session)
-          setUser(session?.user ?? null)
+          setSession(session);
+          setUser(session?.user ?? null);
         }
       } catch (err) {
-        console.error('Unexpected error getting session:', err)
-        setError(err as AuthError)
+        console.error('Unexpected error getting session:', err);
+        setError(err as AuthError);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    getSession()
+    getSession();
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event)
-      
-      setSession(session)
-      setUser(session?.user ?? null)
-      setError(null)
-      setLoading(false)
+      console.log('Auth state changed:', event);
+
+      setSession(session);
+      setUser(session?.user ?? null);
+      setError(null);
+      setLoading(false);
 
       // Handle specific events
       if (event === 'SIGNED_IN') {
-        console.log('User signed in:', session?.user?.email)
+        console.log('User signed in:', session?.user?.email);
       } else if (event === 'SIGNED_OUT') {
-        console.log('User signed out')
+        console.log('User signed out');
       } else if (event === 'TOKEN_REFRESHED') {
-        console.log('Token refreshed')
+        console.log('Token refreshed');
       } else if (event === 'PASSWORD_RECOVERY') {
-        console.log('Password recovery initiated')
+        console.log('Password recovery initiated');
       }
-    })
+    });
 
-    return () => subscription.unsubscribe()
-  }, [supabase.auth])
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
 
   const signOut = async () => {
     try {
-      setLoading(true)
-      const { error } = await supabase.auth.signOut()
+      setLoading(true);
+      const { error } = await supabase.auth.signOut();
       if (error) {
-        console.error('Error signing out:', error)
-        setError(error)
+        console.error('Error signing out:', error);
+        setError(error);
       }
     } catch (err) {
-      console.error('Unexpected error signing out:', err)
-      setError(err as AuthError)
+      console.error('Unexpected error signing out:', err);
+      setError(err as AuthError);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const refreshSession = async () => {
     try {
-      setLoading(true)
-      const { data: { session }, error } = await supabase.auth.refreshSession()
+      setLoading(true);
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.refreshSession();
       if (error) {
-        console.error('Error refreshing session:', error)
-        setError(error)
+        console.error('Error refreshing session:', error);
+        setError(error);
       } else {
-        setSession(session)
-        setUser(session?.user ?? null)
+        setSession(session);
+        setUser(session?.user ?? null);
       }
     } catch (err) {
-      console.error('Unexpected error refreshing session:', err)
-      setError(err as AuthError)
+      console.error('Unexpected error refreshing session:', err);
+      setError(err as AuthError);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const value: AuthContextType = {
     user,
@@ -124,12 +136,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loading,
     error,
     signOut,
-    refreshSession
-  }
+    refreshSession,
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue 
-} from '@/components/ui/select';
+// import { Textarea } from '@/components/ui/textarea';
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from '@/components/ui/select';
 import { Bot, Send, Sparkles, Loader2 } from 'lucide-react';
 import { useAI } from '@/hooks/use-ai';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,7 @@ export function AIAssistant() {
   const [input, setInput] = useState('');
   const [selectedModel, setSelectedModel] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const { loading, models, generateContent, getAvailableModels } = useAI();
 
   useEffect(() => {
@@ -63,14 +63,14 @@ export function AIAssistant() {
 
     try {
       const response = await generateContent(input, '', selectedModel);
-      
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: response,
         timestamp: new Date(),
       };
-      
+
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       // Error is already handled in the hook
@@ -111,41 +111,58 @@ export function AIAssistant() {
                 AI Brand Assistant
               </p>
               <p className="text-sm text-muted-foreground">
-                I can help with brand strategy, content creation, and consistency analysis.
+                I can help with brand strategy, content creation, and
+                consistency analysis.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full max-w-md">
-              <button 
-                onClick={() => setInput("Help me define my brand identity and core values")}
+              <button
+                onClick={() =>
+                  setInput('Help me define my brand identity and core values')
+                }
                 className="text-left p-3 rounded-lg border border-dashed border-muted-foreground/30 hover:border-blue-300 hover:bg-blue-50 transition-colors"
               >
                 <p className="text-sm font-medium">Brand Identity</p>
-                <p className="text-xs text-muted-foreground">Define core values & mission</p>
+                <p className="text-xs text-muted-foreground">
+                  Define core values & mission
+                </p>
               </button>
-              
-              <button 
-                onClick={() => setInput("Create a brand color palette and style guide")}
+
+              <button
+                onClick={() =>
+                  setInput('Create a brand color palette and style guide')
+                }
                 className="text-left p-3 rounded-lg border border-dashed border-muted-foreground/30 hover:border-purple-300 hover:bg-purple-50 transition-colors"
               >
                 <p className="text-sm font-medium">Brand Guidelines</p>
-                <p className="text-xs text-muted-foreground">Colors, fonts & styling</p>
+                <p className="text-xs text-muted-foreground">
+                  Colors, fonts & styling
+                </p>
               </button>
-              
-              <button 
-                onClick={() => setInput("Generate content ideas for social media campaign")}
+
+              <button
+                onClick={() =>
+                  setInput('Generate content ideas for social media campaign')
+                }
                 className="text-left p-3 rounded-lg border border-dashed border-muted-foreground/30 hover:border-green-300 hover:bg-green-50 transition-colors"
               >
                 <p className="text-sm font-medium">Content Strategy</p>
-                <p className="text-xs text-muted-foreground">Social media & campaigns</p>
+                <p className="text-xs text-muted-foreground">
+                  Social media & campaigns
+                </p>
               </button>
-              
-              <button 
-                onClick={() => setInput("Analyze my brand consistency across platforms")}
+
+              <button
+                onClick={() =>
+                  setInput('Analyze my brand consistency across platforms')
+                }
                 className="text-left p-3 rounded-lg border border-dashed border-muted-foreground/30 hover:border-orange-300 hover:bg-orange-50 transition-colors"
               >
                 <p className="text-sm font-medium">Brand Analysis</p>
-                <p className="text-xs text-muted-foreground">Consistency & optimization</p>
+                <p className="text-xs text-muted-foreground">
+                  Consistency & optimization
+                </p>
               </button>
             </div>
           </div>
@@ -167,7 +184,9 @@ export function AIAssistant() {
                       : 'bg-muted'
                   )}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-sm whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                   <p className="text-xs mt-1 opacity-70">
                     {message.timestamp.toLocaleTimeString()}
                   </p>
@@ -190,8 +209,8 @@ export function AIAssistant() {
         <div className="flex gap-2">
           <Textarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 handleSend();

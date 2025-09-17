@@ -14,17 +14,21 @@ This project follows Test-Driven Development principles. **All new features must
 ## TDD Process
 
 ### 1. Write Tests First (RED Phase)
+
 Before implementing any feature:
+
 1. Write E2E tests for user workflows
 2. Write unit tests for business logic
 3. Run tests to ensure they fail (no false positives)
 
 ### 2. Implement Feature (GREEN Phase)
+
 1. Write minimal code to make tests pass
 2. Focus on functionality, not optimization
 3. Run tests frequently during implementation
 
 ### 3. Refactor (REFACTOR Phase)
+
 1. Improve code quality while keeping tests green
 2. Optimize performance
 3. Enhance readability and maintainability
@@ -49,6 +53,7 @@ npm run test:all       # Unit + E2E tests
 ## Writing Tests
 
 ### E2E Test Structure
+
 ```typescript
 // tests/e2e/feature.spec.ts
 import { test, expect } from '@playwright/test';
@@ -61,10 +66,10 @@ test.describe('Feature Name', () => {
   test('should do something', async ({ page }) => {
     // Arrange
     await page.goto('/path');
-    
+
     // Act
     await page.click('button');
-    
+
     // Assert
     await expect(page).toHaveURL('/expected-path');
   });
@@ -72,6 +77,7 @@ test.describe('Feature Name', () => {
 ```
 
 ### Unit Test Structure
+
 ```typescript
 // tests/unit/module.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -84,10 +90,10 @@ describe('Module Name', () => {
   it('should do something', () => {
     // Arrange
     const input = 'test';
-    
+
     // Act
     const result = myFunction(input);
-    
+
     // Assert
     expect(result).toBe('expected');
   });
@@ -117,26 +123,31 @@ tests/
 ## Best Practices
 
 ### 1. Test Naming
+
 - Use descriptive test names that explain the behavior
 - Follow "should [expected behavior] when [condition]" pattern
 - Group related tests with `describe` blocks
 
 ### 2. Test Independence
+
 - Each test should be independent
 - Use `beforeEach` for setup, `afterEach` for cleanup
 - Don't rely on test execution order
 
 ### 3. Assertions
+
 - One logical assertion per test
 - Use specific matchers (`.toBe()`, `.toContain()`, etc.)
 - Test both positive and negative cases
 
 ### 4. Test Data
+
 - Use factories or fixtures for test data
 - Avoid hardcoding values
 - Clean up test data after tests
 
 ### 5. Mocking
+
 - Mock external dependencies
 - Keep mocks simple and focused
 - Update mocks when interfaces change
@@ -144,6 +155,7 @@ tests/
 ## Coverage Requirements
 
 Maintain minimum coverage thresholds:
+
 - Statements: 80%
 - Branches: 75%
 - Functions: 80%
@@ -152,11 +164,13 @@ Maintain minimum coverage thresholds:
 ## CI/CD Integration
 
 All tests run automatically on:
+
 - Pull requests
 - Pushes to main/develop branches
 - Pre-commit hooks (optional)
 
 ### Pipeline Stages
+
 1. **Lint**: Code quality checks
 2. **Type Check**: TypeScript validation
 3. **Unit Tests**: Fast feedback on logic
@@ -166,6 +180,7 @@ All tests run automatically on:
 ## Common Testing Scenarios
 
 ### Authentication Testing
+
 ```typescript
 test('should require authentication', async ({ page }) => {
   await page.goto('/protected-route');
@@ -174,6 +189,7 @@ test('should require authentication', async ({ page }) => {
 ```
 
 ### Form Validation Testing
+
 ```typescript
 test('should show validation errors', async ({ page }) => {
   await page.click('button[type="submit"]');
@@ -182,6 +198,7 @@ test('should show validation errors', async ({ page }) => {
 ```
 
 ### API Testing
+
 ```typescript
 it('should return user data', async () => {
   const response = await fetch('/api/user');
@@ -192,6 +209,7 @@ it('should return user data', async () => {
 ## Debugging Tests
 
 ### Playwright Debugging
+
 ```bash
 # Debug specific test
 npx playwright test auth.spec.ts --debug
@@ -204,6 +222,7 @@ npx playwright show-trace trace.zip
 ```
 
 ### Vitest Debugging
+
 ```bash
 # Run specific test file
 npm run test path/to/test.ts

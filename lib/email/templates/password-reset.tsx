@@ -27,9 +27,7 @@ export const PasswordResetEmail = ({
 }: PasswordResetEmailProps) => (
   <Html>
     <Head />
-    <Preview>
-      Reset your S1BMW password - Link expires in {expiresIn}
-    </Preview>
+    <Preview>Reset your S1BMW password - Link expires in {expiresIn}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={logoContainer}>
@@ -41,70 +39,73 @@ export const PasswordResetEmail = ({
             style={logo}
           />
         </Section>
-        
+
         <Heading style={h1}>Reset Your Password</Heading>
-        
+
         <Text style={text}>
-          We received a request to reset the password for your S1BMW account ({email}).
+          We received a request to reset the password for your S1BMW account (
+          {email}).
         </Text>
-        
+
         <Text style={text}>
-          If you requested this password reset, click the button below to create a new password. 
-          This link will expire in <strong>{expiresIn}</strong>.
+          If you requested this password reset, click the button below to create
+          a new password. This link will expire in <strong>{expiresIn}</strong>.
         </Text>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={resetUrl}>
             Reset Password
           </Button>
         </Section>
-        
+
         <Text style={text}>
-          <strong>Important:</strong> For your security, this password reset link can only be used once 
-          and will expire in {expiresIn}. If you need to reset your password again, 
-          you'll need to make a new request.
+          <strong>Important:</strong> For your security, this password reset
+          link can only be used once and will expire in {expiresIn}. If you need
+          to reset your password again, you'll need to make a new request.
         </Text>
-        
+
         <Hr style={hr} />
-        
+
         <Section style={securitySection}>
           <Text style={securityTitle}>🔒 Security Notice</Text>
           <Text style={text}>
-            If you didn't request a password reset, please ignore this email. Your password 
-            will remain unchanged, and your account is secure.
+            If you didn't request a password reset, please ignore this email.
+            Your password will remain unchanged, and your account is secure.
           </Text>
           <Text style={text}>
-            If you're concerned about unauthorized access to your account, please contact 
-            our support team immediately.
+            If you're concerned about unauthorized access to your account,
+            please contact our support team immediately.
           </Text>
         </Section>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
-          If you're having trouble clicking the button, copy and paste this URL into your browser:
+          If you're having trouble clicking the button, copy and paste this URL
+          into your browser:
         </Text>
         <Link href={resetUrl} style={link}>
           {resetUrl}
         </Link>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
           Need help? Contact our support team at{' '}
           <Link href="mailto:support@s1bmw.com" style={link}>
             support@s1bmw.com
           </Link>
         </Text>
-        
+
         <Text style={footerText}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The S1BMW Team
         </Text>
-        
+
         <Text style={disclaimer}>
-          This password reset was requested for the account: {email}. 
-          If you didn't make this request, please contact support.
+          This password reset was requested for the account: {email}. If you
+          didn't make this request, please contact support.
         </Text>
       </Container>
     </Body>
@@ -116,7 +117,8 @@ export default PasswordResetEmail;
 // Styles
 const main = {
   backgroundColor: '#f6f9fc',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
 
 const container = {
@@ -137,7 +139,8 @@ const logo = {
 
 const h1 = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '24px',
   fontWeight: 'bold',
   margin: '40px 0',
@@ -147,7 +150,8 @@ const h1 = {
 
 const text = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -186,7 +190,8 @@ const securitySection = {
 
 const securityTitle = {
   color: '#856404',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '16px',
   fontWeight: 'bold',
   margin: '0 0 12px',
@@ -194,7 +199,8 @@ const securityTitle = {
 
 const footerText = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '12px',
   lineHeight: '16px',
   margin: '16px 0',
@@ -207,7 +213,8 @@ const link = {
 
 const disclaimer = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '11px',
   lineHeight: '16px',
   margin: '32px 0 0',

@@ -1,36 +1,39 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { updatePassword } from "@/app/actions/auth"
-import { Loader2 } from "lucide-react"
+import * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { updatePassword } from '@/app/actions/auth';
+import { Loader2 } from 'lucide-react';
 
-const updatePasswordSchema = z.object({
-  password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-})
+const updatePasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number'),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
-type UpdatePasswordFormData = z.infer<typeof updatePasswordSchema>
+type UpdatePasswordFormData = z.infer<typeof updatePasswordSchema>;
 
 export function UpdatePasswordForm() {
-  const [error, setError] = React.useState<string>("")
-  const [success, setSuccess] = React.useState<string>("")
-  const [isLoading, setIsLoading] = React.useState(false)
-  const router = useRouter()
+  const [error, setError] = React.useState<string>('');
+  const [success, setSuccess] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -38,30 +41,30 @@ export function UpdatePasswordForm() {
     formState: { errors },
   } = useForm<UpdatePasswordFormData>({
     resolver: zodResolver(updatePasswordSchema),
-  })
+  });
 
   const onSubmit = async (data: UpdatePasswordFormData) => {
-    setIsLoading(true)
-    setError("")
-    setSuccess("")
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
-      const result = await updatePassword(data.password)
-      
+      const result = await updatePassword(data.password);
+
       if (result.error) {
-        setError(result.error)
+        setError(result.error);
       } else if (result.success) {
-        setSuccess(result.data?.message || "Password updated successfully")
+        setSuccess(result.data?.message || 'Password updated successfully');
         setTimeout(() => {
-          router.push("/dashboard")
-        }, 2000)
+          router.push('/dashboard');
+        }, 2000);
       }
     } catch (err) {
-      setError("An unexpected error occurred. Please try again.")
+      setError('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -70,7 +73,7 @@ export function UpdatePasswordForm() {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-      
+
       {success && (
         <Alert>
           <AlertDescription>
@@ -84,7 +87,7 @@ export function UpdatePasswordForm() {
         <Input
           id="password"
           type="password"
-          {...register("password")}
+          {...register('password')}
           disabled={isLoading}
         />
         {errors.password && (
@@ -100,11 +103,13 @@ export function UpdatePasswordForm() {
         <Input
           id="confirmPassword"
           type="password"
-          {...register("confirmPassword")}
+          {...register('confirmPassword')}
           disabled={isLoading}
         />
         {errors.confirmPassword && (
-          <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.confirmPassword.message}
+          </p>
         )}
       </div>
 
@@ -113,5 +118,5 @@ export function UpdatePasswordForm() {
         Update Password
       </Button>
     </form>
-  )
+  );
 }

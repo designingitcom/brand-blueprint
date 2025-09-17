@@ -32,9 +32,11 @@
 ## 🔑 Missing Configuration
 
 ### Supabase API Keys (Required)
+
 You need to get these from: https://supabase.com/dashboard/project/xigzapsughpuqjxttsra/settings/api
 
 Add to `.env`:
+
 ```env
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
@@ -72,14 +74,17 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 ## 🚀 Quick Start
 
 ### 1. Add Supabase Keys
+
 Get from: https://supabase.com/dashboard/project/xigzapsughpuqjxttsra/settings/api
 
 ### 2. Start Development Server
+
 ```bash
 npm run dev
 ```
 
 ### 3. Test Authentication Flow
+
 - Visit http://localhost:3000
 - Click "Get Started" to sign up
 - Use your email (florian@designingit.com) for testing
@@ -89,10 +94,12 @@ npm run dev
 ## 📧 Email Configuration
 
 ### Development (Current)
+
 - Can only send to: florian@designingit.com
 - From address: onboarding@resend.dev
 
 ### Production Setup
+
 1. Verify your domain at resend.com/domains
 2. Update from address in email templates
 3. Remove test restrictions
@@ -130,15 +137,18 @@ npm run dev
 ## 🛠 Troubleshooting
 
 ### "Invalid API key" errors
+
 - Ensure Supabase keys are added to `.env`
 - Restart dev server after adding keys
 
 ### Emails not sending
+
 - Check you're using florian@designingit.com in dev
 - Verify Resend API key is correct
 - Check server logs for errors
 
 ### Can't access dashboard
+
 - Ensure you're logged in
 - Check middleware.ts is working
 - Verify session in browser DevTools

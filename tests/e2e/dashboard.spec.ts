@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Dashboard UI/UX Improvements', () => {
-  test('should display enhanced dashboard with modern design elements', async ({ page }) => {
+  test('should display enhanced dashboard with modern design elements', async ({
+    page,
+  }) => {
     // Visit the page (this will show the public landing since we're not authenticated)
     await page.goto('/');
 
@@ -19,13 +21,13 @@ test.describe('Dashboard UI/UX Improvements', () => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
-    
+
     await expect(page.locator('body')).toBeVisible();
 
     // Test desktop viewport
     await page.setViewportSize({ width: 1200, height: 800 });
     await page.goto('/');
-    
+
     await expect(page.locator('body')).toBeVisible();
 
     console.log('Responsive layout test passed');

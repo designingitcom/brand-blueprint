@@ -41,38 +41,36 @@ export const WelcomeEmail = ({
             style={logo}
           />
         </Section>
-        
+
         <Heading style={h1}>Welcome to S1BMW!</Heading>
-        
+
         <Text style={text}>Hi {firstName},</Text>
-        
+
         <Text style={text}>
-          Welcome to S1BMW, the premier platform for BMW enthusiasts and professionals. 
-          We're excited to have you join our community!
+          Welcome to S1BMW, the premier platform for BMW enthusiasts and
+          professionals. We're excited to have you join our community!
         </Text>
-        
+
         <Text style={text}>
-          To get started and access all features, please verify your email address by 
-          clicking the button below:
+          To get started and access all features, please verify your email
+          address by clicking the button below:
         </Text>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={verificationUrl}>
             Verify Email Address
           </Button>
         </Section>
-        
+
         <Text style={text}>
-          This verification link will expire in 24 hours. If you didn't create an account 
-          with S1BMW, you can safely ignore this email.
+          This verification link will expire in 24 hours. If you didn't create
+          an account with S1BMW, you can safely ignore this email.
         </Text>
-        
+
         <Hr style={hr} />
-        
+
         <Section style={footerSection}>
-          <Text style={footerText}>
-            Once verified, you'll be able to:
-          </Text>
+          <Text style={footerText}>Once verified, you'll be able to:</Text>
           <ul style={list}>
             <li style={listItem}>Access exclusive BMW resources and tools</li>
             <li style={listItem}>Connect with other BMW enthusiasts</li>
@@ -80,33 +78,36 @@ export const WelcomeEmail = ({
             <li style={listItem}>Stay updated with the latest BMW insights</li>
           </ul>
         </Section>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
-          If you're having trouble clicking the button, copy and paste this URL into your browser:
+          If you're having trouble clicking the button, copy and paste this URL
+          into your browser:
         </Text>
         <Link href={verificationUrl} style={link}>
           {verificationUrl}
         </Link>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
           Questions? Contact our support team at{' '}
           <Link href="mailto:support@s1bmw.com" style={link}>
             support@s1bmw.com
           </Link>
         </Text>
-        
+
         <Text style={footerText}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The S1BMW Team
         </Text>
-        
+
         <Text style={disclaimer}>
-          You received this email because you created an account at S1BMW ({email}). 
-          If you didn't create this account, please contact our support team.
+          You received this email because you created an account at S1BMW (
+          {email}). If you didn't create this account, please contact our
+          support team.
         </Text>
       </Container>
     </Body>
@@ -118,7 +119,8 @@ export default WelcomeEmail;
 // Styles
 const main = {
   backgroundColor: '#f6f9fc',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
 
 const container = {
@@ -139,7 +141,8 @@ const logo = {
 
 const h1 = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '24px',
   fontWeight: 'bold',
   margin: '40px 0',
@@ -149,7 +152,8 @@ const h1 = {
 
 const text = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -184,7 +188,8 @@ const footerSection = {
 
 const footerText = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '12px',
   lineHeight: '16px',
   margin: '16px 0',
@@ -192,7 +197,8 @@ const footerText = {
 
 const list = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -210,7 +216,8 @@ const link = {
 
 const disclaimer = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '11px',
   lineHeight: '16px',
   margin: '32px 0 0',

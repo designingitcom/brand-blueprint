@@ -23,7 +23,9 @@ export async function sendWelcomeEmail(
     });
   } catch (error) {
     console.error('Failed to send welcome email:', error);
-    throw new Error(`Failed to send welcome email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send welcome email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -46,7 +48,9 @@ export async function sendPasswordResetEmail(
     });
   } catch (error) {
     console.error('Failed to send password reset email:', error);
-    throw new Error(`Failed to send password reset email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send password reset email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -59,10 +63,10 @@ export async function sendOnboardingReminderEmail(
 ) {
   try {
     const onboardingUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://s1bmw.com'}/onboarding`;
-    
+
     return await sendEmail({
       to: email,
-      subject: businessName 
+      subject: businessName
         ? `Complete your ${businessName} setup on S1BMW`
         : 'Complete your S1BMW business setup',
       react: OnboardingReminderEmail({
@@ -76,7 +80,9 @@ export async function sendOnboardingReminderEmail(
     });
   } catch (error) {
     console.error('Failed to send onboarding reminder email:', error);
-    throw new Error(`Failed to send onboarding reminder email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send onboarding reminder email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -99,7 +105,7 @@ export async function sendProjectInviteEmail(
       inviteeName,
       projectDescription,
       role = 'Collaborator',
-      expiresIn = '7 days'
+      expiresIn = '7 days',
     } = options;
 
     return await sendEmail({
@@ -120,7 +126,9 @@ export async function sendProjectInviteEmail(
     });
   } catch (error) {
     console.error('Failed to send project invitation email:', error);
-    throw new Error(`Failed to send project invitation email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send project invitation email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -138,7 +146,7 @@ export async function sendAccountNotificationEmail(
 ) {
   try {
     const { title, message, actionUrl, actionText, userName } = content;
-    
+
     // Simple HTML template for generic notifications
     const htmlContent = `
       <!DOCTYPE html>
@@ -160,11 +168,15 @@ export async function sendAccountNotificationEmail(
             
             <p style="color: #333; font-size: 14px; line-height: 24px; margin: 16px 0;">${message}</p>
             
-            ${actionUrl && actionText ? `
+            ${
+              actionUrl && actionText
+                ? `
               <div style="text-align: center; margin: 32px 0;">
                 <a href="${actionUrl}" style="background-color: #007cba; color: #fff; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px; padding: 12px 24px; display: inline-block;">${actionText}</a>
               </div>
-            ` : ''}
+            `
+                : ''
+            }
             
             <hr style="border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;">
             
@@ -190,7 +202,9 @@ export async function sendAccountNotificationEmail(
     });
   } catch (error) {
     console.error('Failed to send account notification email:', error);
-    throw new Error(`Failed to send account notification email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send account notification email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -208,8 +222,9 @@ export async function sendTeamNotificationEmail(
   }
 ) {
   try {
-    const { title, message, senderName, projectName, actionUrl, actionText } = content;
-    
+    const { title, message, senderName, projectName, actionUrl, actionText } =
+      content;
+
     // Simple HTML template for team notifications
     const htmlContent = `
       <!DOCTYPE html>
@@ -237,11 +252,15 @@ export async function sendTeamNotificationEmail(
               <p style="color: #333; font-size: 14px; line-height: 24px; margin: 0;">${message}</p>
             </div>
             
-            ${actionUrl && actionText ? `
+            ${
+              actionUrl && actionText
+                ? `
               <div style="text-align: center; margin: 32px 0;">
                 <a href="${actionUrl}" style="background-color: #007cba; color: #fff; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 8px; padding: 12px 24px; display: inline-block;">${actionText}</a>
               </div>
-            ` : ''}
+            `
+                : ''
+            }
             
             <hr style="border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;">
             
@@ -268,7 +287,9 @@ export async function sendTeamNotificationEmail(
     });
   } catch (error) {
     console.error('Failed to send team notification email:', error);
-    throw new Error(`Failed to send team notification email: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to send team notification email: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -278,23 +299,32 @@ export function validateEmailTemplate(templateData: Record<string, any>): {
   errors: string[];
 } {
   const errors: string[] = [];
-  
+
   // Check for required fields based on template type
   if (!templateData.email) {
     errors.push('Email address is required');
   }
-  
+
   if (!templateData.subject && !templateData.title) {
     errors.push('Subject or title is required');
   }
-  
+
   // Validate email format
-  if (templateData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(templateData.email)) {
+  if (
+    templateData.email &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(templateData.email)
+  ) {
     errors.push('Invalid email format');
   }
-  
+
   // Validate URLs if provided
-  const urlFields = ['verificationUrl', 'resetUrl', 'inviteUrl', 'actionUrl', 'onboardingUrl'];
+  const urlFields = [
+    'verificationUrl',
+    'resetUrl',
+    'inviteUrl',
+    'actionUrl',
+    'onboardingUrl',
+  ];
   urlFields.forEach(field => {
     if (templateData[field]) {
       try {
@@ -304,7 +334,7 @@ export function validateEmailTemplate(templateData: Record<string, any>): {
       }
     }
   });
-  
+
   return {
     isValid: errors.length === 0,
     errors,
@@ -313,7 +343,12 @@ export function validateEmailTemplate(templateData: Record<string, any>): {
 
 // Batch email sending with template validation
 export async function sendBatchTemplateEmails(
-  emailType: 'welcome' | 'password-reset' | 'onboarding-reminder' | 'project-invitation' | 'notification',
+  emailType:
+    | 'welcome'
+    | 'password-reset'
+    | 'onboarding-reminder'
+    | 'project-invitation'
+    | 'notification',
   recipients: Array<{
     email: string;
     templateData: Record<string, any>;
@@ -321,7 +356,7 @@ export async function sendBatchTemplateEmails(
 ) {
   const results = [];
   const errors = [];
-  
+
   for (const { email, templateData } of recipients) {
     try {
       // Validate template data
@@ -333,7 +368,7 @@ export async function sendBatchTemplateEmails(
         });
         continue;
       }
-      
+
       // Send email based on type
       let result;
       switch (emailType) {
@@ -344,7 +379,7 @@ export async function sendBatchTemplateEmails(
             templateData.verificationUrl
           );
           break;
-          
+
         case 'password-reset':
           result = await sendPasswordResetEmail(
             email,
@@ -352,7 +387,7 @@ export async function sendBatchTemplateEmails(
             templateData.expiresIn
           );
           break;
-          
+
         case 'onboarding-reminder':
           result = await sendOnboardingReminderEmail(
             email,
@@ -361,7 +396,7 @@ export async function sendBatchTemplateEmails(
             templateData.daysAgo
           );
           break;
-          
+
         case 'project-invitation':
           result = await sendProjectInviteEmail(
             email,
@@ -377,7 +412,7 @@ export async function sendBatchTemplateEmails(
             }
           );
           break;
-          
+
         case 'notification':
           result = await sendAccountNotificationEmail(
             email,
@@ -391,11 +426,11 @@ export async function sendBatchTemplateEmails(
             }
           );
           break;
-          
+
         default:
           throw new Error(`Unknown email type: ${emailType}`);
       }
-      
+
       results.push({ email, result, success: true });
     } catch (error) {
       console.error(`Failed to send ${emailType} email to ${email}:`, error);
@@ -406,7 +441,7 @@ export async function sendBatchTemplateEmails(
       });
     }
   }
-  
+
   return {
     successful: results,
     failed: errors,

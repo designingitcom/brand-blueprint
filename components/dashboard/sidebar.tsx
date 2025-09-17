@@ -1,50 +1,44 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useAuth } from "@/lib/contexts/auth-context"
-import { 
-  Home, 
-  Users, 
-  Settings, 
-  LogOut, 
-  FolderOpen 
-} from "lucide-react"
+import * as React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useAuth } from '@/lib/contexts/auth-context';
+import { Home, Users, Settings, LogOut, FolderOpen } from 'lucide-react';
 
 const navItems = [
   {
-    title: "Dashboard",
-    href: "/dashboard",
+    title: 'Dashboard',
+    href: '/dashboard',
     icon: Home,
     badge: null,
   },
   {
-    title: "Projects",
-    href: "/projects",
+    title: 'Projects',
+    href: '/projects',
     icon: FolderOpen,
-    badge: "0",
+    badge: '0',
   },
   {
-    title: "Team",
-    href: "/team",
+    title: 'Team',
+    href: '/team',
     icon: Users,
-    badge: "1",
+    badge: '1',
   },
   {
-    title: "Settings",
-    href: "/settings",
+    title: 'Settings',
+    href: '/settings',
     icon: Settings,
     badge: null,
   },
-]
+];
 
 export function Sidebar() {
-  const pathname = usePathname()
-  const { user, signOut } = useAuth()
+  const pathname = usePathname();
+  const { user, signOut } = useAuth();
 
   const getInitials = (name: string) => {
     return name
@@ -52,10 +46,11 @@ export function Sidebar() {
       .map(n => n[0])
       .join('')
       .toUpperCase()
-      .slice(0, 2)
-  }
+      .slice(0, 2);
+  };
 
-  const userDisplayName = user?.user_metadata?.full_name || user?.email || "User"
+  const userDisplayName =
+    user?.user_metadata?.full_name || user?.email || 'User';
 
   return (
     <div className="flex h-full w-64 flex-col bg-card border-r">
@@ -71,19 +66,19 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
-        {navItems.map((item) => {
-          const Icon = item.icon
-          const isActive = pathname === item.href
-          
+        {navItems.map(item => {
+          const Icon = item.icon;
+          const isActive = pathname === item.href;
+
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:shadow-sm",
-                isActive 
-                  ? "bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-l-4 border-l-blue-600 shadow-sm" 
-                  : "text-muted-foreground hover:text-foreground"
+                'flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:shadow-sm',
+                isActive
+                  ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-l-4 border-l-blue-600 shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <div className="flex items-center gap-3">
@@ -91,17 +86,19 @@ export function Sidebar() {
                 {item.title}
               </div>
               {item.badge && (
-                <span className={cn(
-                  "text-xs px-2 py-0.5 rounded-full font-medium",
-                  isActive 
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-muted text-muted-foreground"
-                )}>
+                <span
+                  className={cn(
+                    'text-xs px-2 py-0.5 rounded-full font-medium',
+                    isActive
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'bg-muted text-muted-foreground'
+                  )}
+                >
                   {item.badge}
                 </span>
               )}
             </Link>
-          )
+          );
         })}
       </nav>
 
@@ -132,5 +129,5 @@ export function Sidebar() {
         </div>
       </div>
     </div>
-  )
+  );
 }

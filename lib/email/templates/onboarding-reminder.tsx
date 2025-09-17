@@ -31,9 +31,7 @@ export const OnboardingReminderEmail = ({
 }: OnboardingReminderEmailProps) => (
   <Html>
     <Head />
-    <Preview>
-      Complete your S1BMW business setup to unlock all features
-    </Preview>
+    <Preview>Complete your S1BMW business setup to unlock all features</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={logoContainer}>
@@ -45,88 +43,104 @@ export const OnboardingReminderEmail = ({
             style={logo}
           />
         </Section>
-        
+
         <Heading style={h1}>Complete Your Business Setup</Heading>
-        
+
         <Text style={text}>Hi {firstName},</Text>
-        
+
         <Text style={text}>
-          {daysAgo > 0 
+          {daysAgo > 0
             ? `It's been ${daysAgo} ${daysAgo === 1 ? 'day' : 'days'} since you joined S1BMW, and we noticed you haven't completed your business setup yet.`
-            : "Welcome to S1BMW! We noticed you haven't completed your business setup yet."
-          }
+            : "Welcome to S1BMW! We noticed you haven't completed your business setup yet."}
         </Text>
-        
+
         <Text style={text}>
-          {businessName 
+          {businessName
             ? `To get the most out of S1BMW for ${businessName}, please complete your business onboarding.`
-            : "To unlock all features and get the most out of S1BMW, please complete your business onboarding."
-          } This will only take a few minutes and will help us:
+            : 'To unlock all features and get the most out of S1BMW, please complete your business onboarding.'}{' '}
+          This will only take a few minutes and will help us:
         </Text>
-        
+
         <Section style={benefitsSection}>
           <ul style={list}>
-            <li style={listItem}>🎯 Customize your dashboard for your specific business needs</li>
-            <li style={listItem}>🔧 Recommend the most relevant BMW tools and resources</li>
-            <li style={listItem}>👥 Connect you with other professionals in your area</li>
-            <li style={listItem}>📈 Provide insights tailored to your business size and focus</li>
-            <li style={listItem}>🚀 Unlock advanced project management features</li>
+            <li style={listItem}>
+              🎯 Customize your dashboard for your specific business needs
+            </li>
+            <li style={listItem}>
+              🔧 Recommend the most relevant BMW tools and resources
+            </li>
+            <li style={listItem}>
+              👥 Connect you with other professionals in your area
+            </li>
+            <li style={listItem}>
+              📈 Provide insights tailored to your business size and focus
+            </li>
+            <li style={listItem}>
+              🚀 Unlock advanced project management features
+            </li>
           </ul>
         </Section>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={onboardingUrl}>
             Complete Setup (5 minutes)
           </Button>
         </Section>
-        
+
         <Hr style={hr} />
-        
+
         <Section style={progressSection}>
           <Text style={progressTitle}>⏰ What You're Missing</Text>
           <Text style={text}>
             Without completing your business setup, you're missing out on:
           </Text>
           <ul style={featureList}>
-            <li style={featureItem}>Access to premium BMW technical resources</li>
+            <li style={featureItem}>
+              Access to premium BMW technical resources
+            </li>
             <li style={featureItem}>Advanced project collaboration tools</li>
-            <li style={featureItem}>Customized business insights and analytics</li>
+            <li style={featureItem}>
+              Customized business insights and analytics
+            </li>
             <li style={featureItem}>Priority customer support</li>
           </ul>
         </Section>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={text}>
-          <strong>Need help getting started?</strong> Our setup wizard will guide you through 
-          each step, and our support team is always available if you need assistance.
+          <strong>Need help getting started?</strong> Our setup wizard will
+          guide you through each step, and our support team is always available
+          if you need assistance.
         </Text>
-        
+
         <Text style={footerText}>
-          If you're having trouble clicking the button, copy and paste this URL into your browser:
+          If you're having trouble clicking the button, copy and paste this URL
+          into your browser:
         </Text>
         <Link href={onboardingUrl} style={link}>
           {onboardingUrl}
         </Link>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
           Questions about the setup process? Contact our support team at{' '}
           <Link href="mailto:support@s1bmw.com" style={link}>
             support@s1bmw.com
           </Link>
         </Text>
-        
+
         <Text style={footerText}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The S1BMW Team
         </Text>
-        
+
         <Text style={disclaimer}>
-          You're receiving this reminder because you created an account at S1BMW ({email}) 
-          but haven't completed business setup. You can unsubscribe from setup reminders 
-          by completing the onboarding process.
+          You're receiving this reminder because you created an account at S1BMW
+          ({email}) but haven't completed business setup. You can unsubscribe
+          from setup reminders by completing the onboarding process.
         </Text>
       </Container>
     </Body>
@@ -138,7 +152,8 @@ export default OnboardingReminderEmail;
 // Styles
 const main = {
   backgroundColor: '#f6f9fc',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
 
 const container = {
@@ -159,7 +174,8 @@ const logo = {
 
 const h1 = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '24px',
   fontWeight: 'bold',
   margin: '40px 0',
@@ -169,7 +185,8 @@ const h1 = {
 
 const text = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -212,7 +229,8 @@ const progressSection = {
 
 const progressTitle = {
   color: '#495057',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '16px',
   fontWeight: 'bold',
   margin: '0 0 12px',
@@ -220,7 +238,8 @@ const progressTitle = {
 
 const list = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -235,7 +254,8 @@ const listItem = {
 
 const featureList = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -248,7 +268,8 @@ const featureItem = {
 
 const footerText = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '12px',
   lineHeight: '16px',
   margin: '16px 0',
@@ -261,7 +282,8 @@ const link = {
 
 const disclaimer = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '11px',
   lineHeight: '16px',
   margin: '32px 0 0',

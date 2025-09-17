@@ -46,7 +46,14 @@ const getRetryDelay = (attempt: number): number => {
 
 // Main email sending function with retry logic
 export async function sendEmail(options: EmailOptions) {
-  const { to, subject, html, react, from = DEFAULT_FROM, ...otherOptions } = options;
+  const {
+    to,
+    subject,
+    html,
+    react,
+    from = DEFAULT_FROM,
+    ...otherOptions
+  } = options;
 
   // Validate required fields
   if (!to) {
@@ -60,7 +67,7 @@ export async function sendEmail(options: EmailOptions) {
   }
 
   let lastError: Error | undefined;
-  
+
   for (let attempt = 0; attempt <= RETRY_CONFIG.maxRetries; attempt++) {
     try {
       const emailData: any = {
@@ -80,8 +87,11 @@ export async function sendEmail(options: EmailOptions) {
       const result = await resend.emails.send(emailData);
 
       // Log successful send
-      console.log(`Email sent successfully to ${Array.isArray(to) ? to.join(', ') : to}:`, result);
-      
+      console.log(
+        `Email sent successfully to ${Array.isArray(to) ? to.join(', ') : to}:`,
+        result
+      );
+
       return result;
     } catch (error) {
       lastError = error as Error;
@@ -113,33 +123,43 @@ export async function sendEmail(options: EmailOptions) {
   }
 
   // If we get here, all retries failed
-  console.error(`Failed to send email after ${RETRY_CONFIG.maxRetries + 1} attempts`);
-  throw new Error(`Email sending failed: ${lastError?.message || 'Unknown error'}`);
+  console.error(
+    `Failed to send email after ${RETRY_CONFIG.maxRetries + 1} attempts`
+  );
+  throw new Error(
+    `Email sending failed: ${lastError?.message || 'Unknown error'}`
+  );
 }
 
 // Batch email sending function
-export async function sendBatchEmails(emails: EmailOptions[], batchSize: number = 10) {
+export async function sendBatchEmails(
+  emails: EmailOptions[],
+  batchSize: number = 10
+) {
   const results: any[] = [];
   const errors: any[] = [];
 
   // Process emails in batches to avoid rate limiting
   for (let i = 0; i < emails.length; i += batchSize) {
     const batch = emails.slice(i, i + batchSize);
-    
+
     // Send batch concurrently
     const batchPromises = batch.map(async (emailOptions, index) => {
       try {
         const result = await sendEmail(emailOptions);
         return { index: i + index, result, success: true };
       } catch (error) {
-        console.error(`Failed to send email in batch at index ${i + index}:`, error);
+        console.error(
+          `Failed to send email in batch at index ${i + index}:`,
+          error
+        );
         return { index: i + index, error, success: false };
       }
     });
 
     const batchResults = await Promise.allSettled(batchPromises);
-    
-    batchResults.forEach((result) => {
+
+    batchResults.forEach(result => {
       if (result.status === 'fulfilled') {
         if (result.value.success) {
           results.push(result.value);

@@ -10,96 +10,99 @@ export function useAI() {
   const [loading, setLoading] = useState(false);
   const [models, setModels] = useState<AIModel[]>([]);
 
-  const generateContent = useCallback(async (
-    prompt: string,
-    context?: string,
-    model?: string
-  ): Promise<string> => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'generateContent',
-          data: { prompt, context, model }
-        })
-      });
+  const generateContent = useCallback(
+    async (
+      prompt: string,
+      context?: string,
+      model?: string
+    ): Promise<string> => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'generateContent',
+            data: { prompt, context, model },
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to generate content');
+        if (!response.ok) {
+          throw new Error('Failed to generate content');
+        }
+
+        const { content } = await response.json();
+        return content;
+      } catch (error) {
+        console.error('AI generation error:', error);
+        toast.error('Failed to generate content');
+        throw error;
+      } finally {
+        setLoading(false);
       }
+    },
+    []
+  );
 
-      const { content } = await response.json();
-      return content;
-    } catch (error) {
-      console.error('AI generation error:', error);
-      toast.error('Failed to generate content');
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const analyzeBrandConsistency = useCallback(
+    async (content: string, guidelines: string): Promise<string> => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'analyzeBrandConsistency',
+            data: { content, guidelines },
+          }),
+        });
 
-  const analyzeBrandConsistency = useCallback(async (
-    content: string,
-    guidelines: string
-  ): Promise<string> => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'analyzeBrandConsistency',
-          data: { content, guidelines }
-        })
-      });
+        if (!response.ok) {
+          throw new Error('Failed to analyze content');
+        }
 
-      if (!response.ok) {
-        throw new Error('Failed to analyze content');
+        const { analysis } = await response.json();
+        return analysis;
+      } catch (error) {
+        console.error('AI analysis error:', error);
+        toast.error('Failed to analyze content');
+        throw error;
+      } finally {
+        setLoading(false);
       }
+    },
+    []
+  );
 
-      const { analysis } = await response.json();
-      return analysis;
-    } catch (error) {
-      console.error('AI analysis error:', error);
-      toast.error('Failed to analyze content');
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const generateBrandStrategy = useCallback(
+    async (businessInfo: any, targetAudience: string): Promise<string> => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'generateStrategy',
+            data: { businessInfo, targetAudience },
+          }),
+        });
 
-  const generateBrandStrategy = useCallback(async (
-    businessInfo: any,
-    targetAudience: string
-  ): Promise<string> => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'generateStrategy',
-          data: { businessInfo, targetAudience }
-        })
-      });
+        if (!response.ok) {
+          throw new Error('Failed to generate strategy');
+        }
 
-      if (!response.ok) {
-        throw new Error('Failed to generate strategy');
+        const { strategy } = await response.json();
+        return strategy;
+      } catch (error) {
+        console.error('AI strategy error:', error);
+        toast.error('Failed to generate strategy');
+        throw error;
+      } finally {
+        setLoading(false);
       }
-
-      const { strategy } = await response.json();
-      return strategy;
-    } catch (error) {
-      console.error('AI strategy error:', error);
-      toast.error('Failed to generate strategy');
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const getAvailableModels = useCallback(async (): Promise<AIModel[]> => {
     try {
@@ -108,8 +111,8 @@ export function useAI() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'getModels',
-          data: {}
-        })
+          data: {},
+        }),
       });
 
       if (!response.ok) {

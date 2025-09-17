@@ -39,6 +39,7 @@
 ## 🔑 Configuration
 
 The OpenRouter API key is already configured in `.env`:
+
 ```env
 OPENROUTER_API_KEY=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
 ```
@@ -46,7 +47,9 @@ OPENROUTER_API_KEY=sk-or-v1-ae1384410f69dfb2a264d8cccfa6b39fe73ad435bb469a423a33
 ## 📍 Integration Points
 
 ### Dashboard
+
 The AI Assistant is integrated into the main dashboard at `/dashboard`. Users can:
+
 - Ask questions about brand management
 - Generate brand content
 - Get strategic advice
@@ -59,11 +62,11 @@ import { useAI } from '@/hooks/use-ai';
 
 function MyComponent() {
   const { generateContent, loading } = useAI();
-  
+
   const handleGenerate = async () => {
     const content = await generateContent(
-      "Create a brand tagline for a sustainable fashion company",
-      "Target audience: eco-conscious millennials"
+      'Create a brand tagline for a sustainable fashion company',
+      'Target audience: eco-conscious millennials'
     );
     console.log(content);
   };
@@ -90,6 +93,7 @@ function MyComponent() {
 ## 🛠 Future Enhancements
 
 Potential improvements to consider:
+
 - Save conversation history
 - Export AI-generated content
 - Templates for common brand tasks
@@ -100,6 +104,7 @@ Potential improvements to consider:
 ## 📊 Usage Tracking
 
 Consider implementing:
+
 - Token usage monitoring
 - Cost tracking per user/business
 - Usage limits and quotas
@@ -115,6 +120,7 @@ Consider implementing:
 ## 📚 API Reference
 
 ### Generate Content
+
 ```javascript
 POST /api/ai
 {
@@ -128,6 +134,7 @@ POST /api/ai
 ```
 
 ### Analyze Brand Consistency
+
 ```javascript
 POST /api/ai
 {
@@ -140,6 +147,7 @@ POST /api/ai
 ```
 
 ### Generate Strategy
+
 ```javascript
 POST /api/ai
 {

@@ -28,6 +28,7 @@ NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 ### 2. Domain Configuration
 
 In your Resend dashboard:
+
 1. Add and verify your domain
 2. Update the `DEFAULT_FROM` constant in `resend.ts` with your domain
 
@@ -69,10 +70,10 @@ await sendOnboardingReminderEmail(email, firstName, businessName, daysAgo);
 
 // Project invitation
 await sendProjectInviteEmail(
-  email, 
-  inviterName, 
-  inviterEmail, 
-  projectName, 
+  email,
+  inviterName,
+  inviterEmail,
+  projectName,
   inviteUrl,
   { role: 'Editor', projectDescription: '...' }
 );
@@ -86,12 +87,12 @@ import { sendBatchTemplateEmails } from '@/lib/email';
 const recipients = [
   {
     email: 'user1@example.com',
-    templateData: { firstName: 'John', verificationUrl: '...' }
+    templateData: { firstName: 'John', verificationUrl: '...' },
   },
   {
     email: 'user2@example.com',
-    templateData: { firstName: 'Jane', verificationUrl: '...' }
-  }
+    templateData: { firstName: 'Jane', verificationUrl: '...' },
+  },
 ];
 
 const result = await sendBatchTemplateEmails('welcome', recipients);
@@ -112,9 +113,9 @@ await sendEmail({
     {
       filename: 'document.pdf',
       content: pdfBuffer,
-      contentType: 'application/pdf'
-    }
-  ]
+      contentType: 'application/pdf',
+    },
+  ],
 });
 ```
 
@@ -248,6 +249,7 @@ try {
 ### Automatic Retry
 
 Emails are automatically retried with exponential backoff:
+
 - 3 retry attempts
 - Exponential delay: 1s, 2s, 4s
 - Certain errors (auth, invalid email) are not retried
@@ -255,6 +257,7 @@ Emails are automatically retried with exponential backoff:
 ## Rate Limiting
 
 The system respects Resend's rate limits:
+
 - Batch processing with configurable batch size
 - Automatic delays between batches
 - Individual email retry logic
@@ -291,9 +294,10 @@ if (!validation.isValid) {
 
 ```typescript
 // Use different domains for different environments
-const baseUrl = process.env.NODE_ENV === 'production' 
-  ? 'https://s1bmw.com'
-  : 'http://localhost:3000';
+const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://s1bmw.com'
+    : 'http://localhost:3000';
 
 const verificationUrl = `${baseUrl}/verify?token=${token}`;
 ```
@@ -312,7 +316,7 @@ try {
     error: error.message,
     timestamp: new Date().toISOString(),
   });
-  
+
   // Optionally notify admins or retry later
   throw error;
 }

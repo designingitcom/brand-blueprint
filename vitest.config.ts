@@ -13,13 +13,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './test-results/coverage',
-      exclude: [
-        'node_modules',
-        'tests',
-        '**/*.config.*',
-        '**/*.d.ts',
-        '.next',
-      ],
+      exclude: ['node_modules', 'tests', '**/*.config.*', '**/*.d.ts', '.next'],
     },
   },
   resolve: {

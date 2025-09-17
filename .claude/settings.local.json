@@ -1,9 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ruv-swarm",
-      "mcp__claude-flow"
+      "*",
+      "Bash(npx next:*)",
+      "Bash(curl:*)",
+      "Bash(npx supabase:*)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Read(//var/folders/5y/gyl488nd41745jpc2r_lgd_40000gn/T/TemporaryItems/NSIRD_screencaptureui_dsrxFu/**)",
+      "Bash(npm run dev:*)",
+      "Bash(pkill:*)",
+      "Bash(python3:*)",
+      "Bash(git add:*)"
     ],
-    "deny": []
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo rm:*)",
+      "Bash(format:*)",
+      "Bash(mkfs:*)"
+    ],
+    "ask": [],
+    "defaultMode": "bypassPermissions"
   }
 }

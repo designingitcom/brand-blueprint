@@ -51,43 +51,50 @@ export const ProjectInvitationEmail = ({
             style={logo}
           />
         </Section>
-        
+
         <Heading style={h1}>You're Invited!</Heading>
-        
+
         <Text style={text}>
           {inviteeName ? `Hi ${inviteeName},` : 'Hello!'}
         </Text>
-        
+
         <Text style={text}>
-          <strong>{inviterName}</strong> ({inviterEmail}) has invited you to collaborate 
-          on the project "<strong>{projectName}</strong>" on S1BMW.
+          <strong>{inviterName}</strong> ({inviterEmail}) has invited you to
+          collaborate on the project "<strong>{projectName}</strong>" on S1BMW.
         </Text>
-        
+
         {projectDescription && (
           <Section style={projectSection}>
             <Text style={projectTitle}>📋 Project Details</Text>
             <Text style={text}>{projectDescription}</Text>
           </Section>
         )}
-        
+
         <Section style={roleSection}>
           <Text style={roleTitle}>👤 Your Role</Text>
           <Text style={roleText}>
-            You've been invited as a <strong>{role}</strong>. This means you'll be able to:
+            You've been invited as a <strong>{role}</strong>. This means you'll
+            be able to:
           </Text>
-          
+
           {role === 'Admin' ? (
             <ul style={permissionsList}>
               <li style={permissionItem}>✅ Full project management access</li>
               <li style={permissionItem}>✅ Invite and manage team members</li>
-              <li style={permissionItem}>✅ Edit all project content and settings</li>
+              <li style={permissionItem}>
+                ✅ Edit all project content and settings
+              </li>
               <li style={permissionItem}>✅ Delete or archive the project</li>
             </ul>
           ) : role === 'Editor' ? (
             <ul style={permissionsList}>
               <li style={permissionItem}>✅ Edit and update project content</li>
-              <li style={permissionItem}>✅ Add and modify project resources</li>
-              <li style={permissionItem}>✅ Comment and collaborate on tasks</li>
+              <li style={permissionItem}>
+                ✅ Add and modify project resources
+              </li>
+              <li style={permissionItem}>
+                ✅ Comment and collaborate on tasks
+              </li>
               <li style={permissionItem}>❌ Invite new team members</li>
             </ul>
           ) : (
@@ -99,67 +106,78 @@ export const ProjectInvitationEmail = ({
             </ul>
           )}
         </Section>
-        
+
         <Section style={buttonContainer}>
           <Button style={button} href={inviteUrl}>
             Accept Invitation
           </Button>
         </Section>
-        
+
         <Text style={text}>
-          This invitation will expire in <strong>{expiresIn}</strong>. 
-          If you don't have a S1BMW account yet, you'll be able to create one 
-          during the invitation process.
+          This invitation will expire in <strong>{expiresIn}</strong>. If you
+          don't have a S1BMW account yet, you'll be able to create one during
+          the invitation process.
         </Text>
-        
+
         <Hr style={hr} />
-        
+
         <Section style={benefitsSection}>
           <Text style={benefitsTitle}>🚀 What You'll Get Access To</Text>
           <ul style={featureList}>
             <li style={featureItem}>Collaborative BMW project workspace</li>
-            <li style={featureItem}>Shared technical resources and documentation</li>
-            <li style={featureItem}>Real-time project updates and notifications</li>
-            <li style={featureItem}>Integration with BMW-specific tools and databases</li>
-            <li style={featureItem}>Professional networking with BMW experts</li>
+            <li style={featureItem}>
+              Shared technical resources and documentation
+            </li>
+            <li style={featureItem}>
+              Real-time project updates and notifications
+            </li>
+            <li style={featureItem}>
+              Integration with BMW-specific tools and databases
+            </li>
+            <li style={featureItem}>
+              Professional networking with BMW experts
+            </li>
           </ul>
         </Section>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={text}>
-          <strong>Questions about this invitation?</strong> You can reach out to 
+          <strong>Questions about this invitation?</strong> You can reach out to
           {inviterName} directly at{' '}
           <Link href={`mailto:${inviterEmail}`} style={link}>
             {inviterEmail}
           </Link>{' '}
           or contact our support team.
         </Text>
-        
+
         <Text style={footerText}>
-          If you're having trouble clicking the button, copy and paste this URL into your browser:
+          If you're having trouble clicking the button, copy and paste this URL
+          into your browser:
         </Text>
         <Link href={inviteUrl} style={link}>
           {inviteUrl}
         </Link>
-        
+
         <Hr style={hr} />
-        
+
         <Text style={footerText}>
           Need help? Contact our support team at{' '}
           <Link href="mailto:support@s1bmw.com" style={link}>
             support@s1bmw.com
           </Link>
         </Text>
-        
+
         <Text style={footerText}>
-          Best regards,<br />
+          Best regards,
+          <br />
           The S1BMW Team
         </Text>
-        
+
         <Text style={disclaimer}>
-          This invitation was sent by {inviterName} ({inviterEmail}) for the project "{projectName}". 
-          If you believe this invitation was sent in error, please contact our support team.
+          This invitation was sent by {inviterName} ({inviterEmail}) for the
+          project "{projectName}". If you believe this invitation was sent in
+          error, please contact our support team.
         </Text>
       </Container>
     </Body>
@@ -171,7 +189,8 @@ export default ProjectInvitationEmail;
 // Styles
 const main = {
   backgroundColor: '#f6f9fc',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
 
 const container = {
@@ -192,7 +211,8 @@ const logo = {
 
 const h1 = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '24px',
   fontWeight: 'bold',
   margin: '40px 0',
@@ -202,7 +222,8 @@ const h1 = {
 
 const text = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -241,7 +262,8 @@ const projectSection = {
 
 const projectTitle = {
   color: '#1565c0',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '16px',
   fontWeight: 'bold',
   margin: '0 0 12px',
@@ -257,7 +279,8 @@ const roleSection = {
 
 const roleTitle = {
   color: '#ef6c00',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '16px',
   fontWeight: 'bold',
   margin: '0 0 8px',
@@ -265,7 +288,8 @@ const roleTitle = {
 
 const roleText = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '0 0 12px',
@@ -273,7 +297,8 @@ const roleText = {
 
 const permissionsList = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '12px 0',
@@ -292,7 +317,8 @@ const benefitsSection = {
 
 const benefitsTitle = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '16px',
   fontWeight: 'bold',
   margin: '0 0 12px',
@@ -300,7 +326,8 @@ const benefitsTitle = {
 
 const featureList = {
   color: '#333',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '16px 0',
@@ -313,7 +340,8 @@ const featureItem = {
 
 const footerText = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '12px',
   lineHeight: '16px',
   margin: '16px 0',
@@ -326,7 +354,8 @@ const link = {
 
 const disclaimer = {
   color: '#8898aa',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
   fontSize: '11px',
   lineHeight: '16px',
   margin: '32px 0 0',

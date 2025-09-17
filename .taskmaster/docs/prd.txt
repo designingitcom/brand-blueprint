@@ -1,0 +1,79 @@
+# ProjectWizard Critical Bug Fix - PRD
+
+## Problem Statement
+The ProjectWizard component has a critical bug where "Business not found" errors persist even when business data is properly loaded and displayed. Users see the error on the review step while the business data ("Secret Service inc") is visible in the UI, indicating stale error state management.
+
+## Root Cause Analysis Required
+1. **Error State Origin** - Identify where "Business not found" errors are generated
+2. **Error Persistence** - Understand why errors remain when data is valid
+3. **Validation Flow** - Analyze the relationship between frontend validation and backend errors
+4. **State Management** - Review how error states are cleared and updated
+
+## Technical Requirements
+
+### 1. Error State Management Fix
+- Implement proper error state clearing when valid data is loaded
+- Ensure error states are reset between form steps
+- Add error recovery mechanisms for transient failures
+- Separate validation errors from data loading errors
+
+### 2. Validation Logic Improvements
+- Implement separate frontend validation for immediate feedback
+- Distinguish between client-side validation and server errors
+- Add proper error boundaries for graceful failure handling
+- Implement retry logic for failed business lookups
+
+### 3. Business Data Loading Flow
+- Verify business data loading mechanisms work correctly
+- Ensure proper error handling during business data fetching
+- Add loading states to prevent premature validation
+- Implement proper data refresh after successful loads
+
+### 4. Form State Coordination
+- Synchronize error states across wizard steps
+- Clear stale errors when moving between steps
+- Implement proper form reset functionality
+- Add validation state persistence across navigation
+
+### 5. User Experience Improvements
+- Provide clear feedback when business data is loading
+- Show appropriate error messages for different failure types
+- Add retry buttons for recoverable errors
+- Implement proper loading indicators
+
+## Testing Requirements
+
+### Unit Testing
+- Test error state clearing mechanisms
+- Verify validation logic for various scenarios
+- Test business data loading with different responses
+- Validate form state management across steps
+
+### Integration Testing
+- Test complete project creation flow end-to-end
+- Verify business lookup with real and mock data
+- Test error recovery scenarios
+- Validate cross-step state management
+
+### User Acceptance Testing
+- Test with real business data scenarios
+- Verify error messages are clear and actionable
+- Test recovery from error states
+- Validate complete project creation workflow
+
+## Success Criteria
+1. "Business not found" errors clear when valid business data loads
+2. Users can successfully complete project creation without stale errors
+3. Error messages are accurate and reflect current state
+4. Business data loading is reliable and properly handled
+5. Form validation provides immediate and accurate feedback
+
+## Files Likely Involved
+- ProjectWizard component and related files
+- Business data fetching utilities
+- Form validation logic
+- Error state management
+- Wizard step navigation components
+
+## Priority
+**CRITICAL** - This is blocking user functionality and needs immediate resolution.

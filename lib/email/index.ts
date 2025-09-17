@@ -134,20 +134,20 @@ export interface EmailServiceHealthResult {
 }
 
 // Batch template email types
-export type EmailTemplateType = 
-  | 'welcome' 
-  | 'password-reset' 
-  | 'onboarding-reminder' 
-  | 'project-invitation' 
+export type EmailTemplateType =
+  | 'welcome'
+  | 'password-reset'
+  | 'onboarding-reminder'
+  | 'project-invitation'
   | 'notification';
 
 // Template data type mapping
 export interface TemplateDataMapping {
-  'welcome': WelcomeEmailProps;
+  welcome: WelcomeEmailProps;
   'password-reset': PasswordResetEmailProps;
   'onboarding-reminder': OnboardingReminderEmailProps;
   'project-invitation': ProjectInvitationEmailProps;
-  'notification': NotificationContent;
+  notification: NotificationContent;
 }
 
 // Utility type for template-specific data

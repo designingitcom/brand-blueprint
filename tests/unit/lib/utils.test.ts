@@ -10,13 +10,13 @@ describe('cn utility function', () => {
   it('should handle conditional classes', () => {
     const isActive = true;
     const isDisabled = false;
-    
+
     const result = cn(
       'btn',
       isActive && 'btn-active',
       isDisabled && 'btn-disabled'
     );
-    
+
     expect(result).toBe('btn btn-active');
   });
 

@@ -43,9 +43,10 @@ export class OpenRouterService {
       const response = await fetch(this.apiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+          'HTTP-Referer':
+            process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
           'X-Title': 'S1BMW Brand Management',
         },
         body: JSON.stringify({
@@ -76,7 +77,8 @@ export class OpenRouterService {
     const messages: OpenRouterMessage[] = [
       {
         role: 'system',
-        content: 'You are an expert brand strategist and content creator. Provide professional, creative, and actionable brand guidance.',
+        content:
+          'You are an expert brand strategist and content creator. Provide professional, creative, and actionable brand guidance.',
       },
     ];
 
@@ -103,7 +105,8 @@ export class OpenRouterService {
     const messages: OpenRouterMessage[] = [
       {
         role: 'system',
-        content: 'You are a brand consistency analyst. Evaluate content against brand guidelines and provide detailed feedback.',
+        content:
+          'You are a brand consistency analyst. Evaluate content against brand guidelines and provide detailed feedback.',
       },
       {
         role: 'user',
@@ -130,7 +133,8 @@ export class OpenRouterService {
     const messages: OpenRouterMessage[] = [
       {
         role: 'system',
-        content: 'You are an expert brand strategist. Create comprehensive brand strategies based on business information and target audience.',
+        content:
+          'You are an expert brand strategist. Create comprehensive brand strategies based on business information and target audience.',
       },
       {
         role: 'user',

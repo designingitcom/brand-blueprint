@@ -14,7 +14,10 @@ export async function GET(request: NextRequest) {
 
     if (!template) {
       return NextResponse.json(
-        { error: 'Template parameter is required. Available templates: welcome, password-reset, onboarding-reminder, project-invitation' },
+        {
+          error:
+            'Template parameter is required. Available templates: welcome, password-reset, onboarding-reminder, project-invitation',
+        },
         { status: 400 }
       );
     }
@@ -36,7 +39,8 @@ export async function GET(request: NextRequest) {
       case 'password-reset':
         sampleData = {
           email: 'john.doe@example.com',
-          resetUrl: 'https://s1bmw.com/reset-password?token=sample-reset-token-456',
+          resetUrl:
+            'https://s1bmw.com/reset-password?token=sample-reset-token-456',
           expiresIn: '1 hour',
         };
         emailComponent = PasswordResetEmail(sampleData);
@@ -46,7 +50,8 @@ export async function GET(request: NextRequest) {
         sampleData = {
           firstName: 'Sarah',
           businessName: 'BMW Performance Shop',
-          onboardingUrl: 'https://s1bmw.com/onboarding?token=sample-onboarding-token-789',
+          onboardingUrl:
+            'https://s1bmw.com/onboarding?token=sample-onboarding-token-789',
           email: 'sarah.johnson@bmwperformance.com',
           daysAgo: 3,
         };
@@ -59,7 +64,8 @@ export async function GET(request: NextRequest) {
           inviterName: 'Alex Rodriguez',
           inviterEmail: 'alex@s1bmw.com',
           projectName: 'E46 M3 Restoration Project',
-          projectDescription: 'Complete restoration of a 2003 BMW E46 M3 including engine rebuild, suspension upgrade, and interior refresh.',
+          projectDescription:
+            'Complete restoration of a 2003 BMW E46 M3 including engine rebuild, suspension upgrade, and interior refresh.',
           inviteUrl: 'https://s1bmw.com/invite?token=sample-invite-token-abc',
           expiresIn: '7 days',
           role: 'Editor',
@@ -69,7 +75,9 @@ export async function GET(request: NextRequest) {
 
       default:
         return NextResponse.json(
-          { error: `Unknown template: ${template}. Available templates: welcome, password-reset, onboarding-reminder, project-invitation` },
+          {
+            error: `Unknown template: ${template}. Available templates: welcome, password-reset, onboarding-reminder, project-invitation`,
+          },
           { status: 400 }
         );
     }

@@ -1,8 +1,8 @@
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 export const createClient = async () => {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,11 +10,11 @@ export const createClient = async () => {
     {
       cookies: {
         get(name: string) {
-          return cookieStore.get(name)?.value
+          return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: any) {
           try {
-            cookieStore.set(name, value, options)
+            cookieStore.set(name, value, options);
           } catch {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
@@ -23,7 +23,7 @@ export const createClient = async () => {
         },
         remove(name: string, options: any) {
           try {
-            cookieStore.set(name, '', options)
+            cookieStore.set(name, '', options);
           } catch {
             // The `remove` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
@@ -32,14 +32,14 @@ export const createClient = async () => {
         },
       },
     }
-  )
-}
+  );
+};
 
 // For server-side operations with service role key
 export const createServiceClient = () => {
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseServiceKey) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
   }
 
   return createServerClient(
@@ -48,7 +48,7 @@ export const createServiceClient = () => {
     {
       cookies: {
         get() {
-          return undefined
+          return undefined;
         },
         set() {
           // No-op for service client
@@ -59,8 +59,8 @@ export const createServiceClient = () => {
       },
       auth: {
         autoRefreshToken: false,
-        persistSession: false
-      }
+        persistSession: false,
+      },
     }
-  )
-}
+  );
+};

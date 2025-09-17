@@ -5,7 +5,7 @@ import { testEmailService } from '@/lib/email';
 export async function GET() {
   try {
     const healthCheck = await testEmailService();
-    
+
     return NextResponse.json({
       status: 'success',
       testMessage: 'Email service test completed',
@@ -13,7 +13,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Email service test failed:', error);
-    
+
     return NextResponse.json(
       {
         status: 'error',
@@ -34,17 +34,17 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const { to, template = 'welcome' } = await request.json();
-    
+
     if (!to) {
       return NextResponse.json(
         { error: 'Email address (to) is required' },
         { status: 400 }
       );
     }
-    
+
     // Import specific email function based on template
     let result;
-    
+
     switch (template) {
       case 'welcome': {
         const { sendWelcomeEmail } = await import('@/lib/email');
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
         );
         break;
       }
-      
+
       case 'password-reset': {
         const { sendPasswordResetEmail } = await import('@/lib/email');
         result = await sendPasswordResetEmail(
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         );
         break;
       }
-      
+
       case 'onboarding-reminder': {
         const { sendOnboardingReminderEmail } = await import('@/lib/email');
         result = await sendOnboardingReminderEmail(
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         );
         break;
       }
-      
+
       case 'project-invitation': {
         const { sendProjectInviteEmail } = await import('@/lib/email');
         result = await sendProjectInviteEmail(
@@ -87,24 +87,25 @@ export async function POST(request: NextRequest) {
         );
         break;
       }
-      
+
       default:
         return NextResponse.json(
-          { error: `Unknown template: ${template}. Available: welcome, password-reset, onboarding-reminder, project-invitation` },
+          {
+            error: `Unknown template: ${template}. Available: welcome, password-reset, onboarding-reminder, project-invitation`,
+          },
           { status: 400 }
         );
     }
-    
+
     return NextResponse.json({
       status: 'success',
       message: `Test ${template} email sent successfully`,
       result,
       recipient: to,
     });
-    
   } catch (error) {
     console.error('Test email send failed:', error);
-    
+
     return NextResponse.json(
       {
         status: 'error',
@@ -128,11 +129,13 @@ export async function OPTIONS() {
         description: 'Send a test email (USE WITH CAUTION - sends real emails)',
         body: {
           to: 'recipient@example.com (required)',
-          template: 'welcome | password-reset | onboarding-reminder | project-invitation (optional, defaults to welcome)',
+          template:
+            'welcome | password-reset | onboarding-reminder | project-invitation (optional, defaults to welcome)',
         },
         response: 'Send result',
       },
     },
-    warning: 'POST endpoint sends real emails. Use only for testing with valid email addresses.',
+    warning:
+      'POST endpoint sends real emails. Use only for testing with valid email addresses.',
   });
 }
