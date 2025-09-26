@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { CreateBusinessButton } from '@/components/forms/create-business-button';
 import { BusinessForm } from '@/components/forms/business-form';
 import { TranslatedText } from '@/components/ui/translated-text';
 import { deleteBusiness, getBusinesses } from '@/app/actions/businesses';
@@ -156,19 +157,12 @@ export default function BusinessesPage() {
       title={t('businesses.title')}
       subtitle={t('businesses.subtitle', 'Manage all businesses across organizations')}
       actions={
-        <BusinessForm
-          organizations={organizations}
-          onSuccess={business => {
-            // Add to local state instead of reloading
-            setBusinesses(prev => [business, ...prev]);
-          }}
-          trigger={
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              {t('businesses.create')}
-            </Button>
-          }
-        />
+        <CreateBusinessButton>
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            {t('businesses.create')}
+          </Button>
+        </CreateBusinessButton>
       }
     >
       <div className="space-y-8">
@@ -411,12 +405,7 @@ export default function BusinessesPage() {
                 ? 'Try adjusting your search or filters'
                 : 'Get started by creating your first business'}
             </p>
-            <BusinessForm
-              organizations={organizations}
-              onSuccess={business => {
-                setBusinesses(prev => [business, ...prev]);
-              }}
-            />
+            <CreateBusinessButton />
           </div>
         )}
       </div>

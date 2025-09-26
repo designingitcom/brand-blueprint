@@ -31,8 +31,8 @@ export function CreateBusinessButton({
       params.set('businessId', existingBusiness.id);
     }
 
-    // Navigate to full-page onboarding
-    router.push(`/en/onboarding?${params.toString()}`);
+    // Navigate to new comprehensive onboarding wizard
+    router.push(`/en/onboarding-v2?${params.toString()}`);
   };
 
   if (children) {

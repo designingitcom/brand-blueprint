@@ -58,6 +58,7 @@ interface FormData {
   businessName: string;
   website: string;
   industry: string;
+  customIndustry: string;
   linkedinUrl: string;
   businessType: string;
   yearsInBusiness: string;
@@ -616,7 +617,7 @@ export function OnboardingWizardV2Content({
   const questionInSection =
     currentSection.questions.indexOf(currentQuestion) + 1;
 
-  const handleNext = useCallback(() => {
+  const handleNext = () => {
     if (isNextDisabled()) return; // Prevent if disabled
 
     const currentIndex = pathQuestions.indexOf(currentQuestion);
@@ -625,7 +626,7 @@ export function OnboardingWizardV2Content({
     } else {
       setShowResults(true);
     }
-  }, [currentQuestion, pathQuestions]);
+  };
 
   const handlePrevious = () => {
     const currentIndex = pathQuestions.indexOf(currentQuestion);
@@ -683,6 +684,14 @@ export function OnboardingWizardV2Content({
 
     // Check persona selection
     if (question?.type === 'personas' && !formData.selectedPersona) {
+      return true;
+    }
+
+    // Additional validation for critical fields only
+    const fieldValue = formData[question.field as keyof FormData];
+
+    // Only validate "Other" custom industry field
+    if (question.field === 'industry' && fieldValue === 'Other' && !formData.customIndustry?.trim()) {
       return true;
     }
 
@@ -1381,6 +1390,21 @@ export function OnboardingWizardV2Content({
                 <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
+
+            {/* Show custom input when "Other" is selected for industry */}
+            {question.field === 'industry' && formData.industry === 'Other' && (
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="customIndustry">Please specify your industry</Label>
+                <Input
+                  id="customIndustry"
+                  placeholder="Enter your industry..."
+                  value={formData.customIndustry}
+                  onChange={e =>
+                    setFormData({ ...formData, customIndustry: e.target.value })
+                  }
+                />
+              </div>
+            )}
           </div>
         );
 
@@ -1472,18 +1496,26 @@ export function OnboardingWizardV2Content({
                     className={cn(
                       'flex items-start space-x-3 p-4 rounded-lg border cursor-pointer transition-colors hover:bg-accent',
                       formData[question.field as keyof FormData] ===
-                        option.value && 'border-yellow-500 bg-yellow-500/10'
+                        option.value && 'border-yellow-600 bg-yellow-600 text-white'
                     )}
                   >
                     <RadioGroupItem
                       value={option.value}
                       id={option.value}
-                      className="mt-1"
+                      className={cn(
+                        'mt-1',
+                        formData[question.field as keyof FormData] ===
+                          option.value && 'border-white text-white bg-white/20'
+                      )}
                     />
                     <div className="space-y-1">
                       <div className="font-medium">{option.label}</div>
                       {option.description && (
-                        <div className="text-sm text-muted-foreground">
+                        <div className={cn(
+                          'text-sm',
+                          formData[question.field as keyof FormData] ===
+                            option.value ? 'text-white/80' : 'text-muted-foreground'
+                        )}>
                           {option.description}
                         </div>
                       )}
