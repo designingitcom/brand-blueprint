@@ -1,10 +1,10 @@
 [
   {
-    "id": "cmd-status-1758011838918",
-    "type": "status",
+    "id": "cmd-hive-mind-1758879793145",
+    "type": "hive-mind",
     "success": true,
-    "duration": 1.3025410000000193,
-    "timestamp": 1758011838919,
+    "duration": 16.327875000000006,
+    "timestamp": 1758879793162,
     "metadata": {}
   }
 ]
