@@ -8,8 +8,8 @@ export default function OnboardingPage() {
 
   const handleComplete = (data: any) => {
     console.log('Onboarding completed with data:', data);
-    // Here you would typically save the data and redirect
-    alert('Onboarding completed! Check console for data.');
+    // Save data and redirect to dashboard
+    router.push('/dashboard');
   };
 
   const handleClose = () => {
