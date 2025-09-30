@@ -444,7 +444,7 @@ interface OnboardingWizardV3SimpleProps {
   onClose?: () => void;
 }
 
-export function OnboardingWizardV3Simple({
+export function OnboardingWizard({
   userId,
   businessId,
   existingBusiness,

@@ -122,7 +122,7 @@ export default function DiagnosticPage() {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => router.push('/en/onboarding-v3-simple')}
+                  onClick={() => router.push('/en/onboarding')}
                 >
                   Try Quick Start Instead
                 </Button>

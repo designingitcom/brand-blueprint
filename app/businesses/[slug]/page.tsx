@@ -176,7 +176,7 @@ export default async function BusinessDetailPage({
                     {businessStatus.description}
                   </p>
                   <Button asChild size="sm">
-                    <Link href={`/en/onboarding-v3-simple?business=${business.id}`} className="gap-2">
+                    <Link href={`/en/onboarding?business=${business.id}`} className="gap-2">
                       <PlayCircle className="h-4 w-4" />
                       Start M0 Onboarding
                     </Link>

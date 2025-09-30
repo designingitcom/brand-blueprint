@@ -165,7 +165,7 @@ export function BusinessForm({
       
       if (!isEditing && result.data) {
         // Redirect to onboarding wizard for new businesses
-        router.push(`/en/onboarding-v3-simple?businessId=${result.data.id}`);
+        router.push(`/en/onboarding?businessId=${result.data.id}`);
       } else if (isEditing) {
         // Refresh the page to see changes for edits
         window.location.reload();

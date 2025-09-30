@@ -1,9 +1,9 @@
 'use client';
 
-import { OnboardingWizardV3Simple } from '@/components/forms/onboarding-wizard-v3-simple';
+import { OnboardingWizard } from '@/components/forms/onboarding-wizard';
 import { useRouter } from 'next/navigation';
 
-export default function OnboardingV3SimplePage() {
+export default function OnboardingPage() {
   const router = useRouter();
 
   const handleComplete = (data: any) => {
@@ -18,7 +18,7 @@ export default function OnboardingV3SimplePage() {
 
   return (
     <div>
-      <OnboardingWizardV3Simple
+      <OnboardingWizard
         onComplete={handleComplete}
         onClose={handleClose}
       />
