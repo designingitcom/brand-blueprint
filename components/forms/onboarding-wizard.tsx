@@ -67,6 +67,7 @@ interface FormData {
   employeeCount: string;
   annualRevenue: string;
   brandAssets: File[];
+  companyDescription: string;
   services: Service[];
   serviceDelivery: string;
   uniqueValue: string;
@@ -88,8 +89,12 @@ interface FormData {
   desiredTransformation: string;
   whyNow: string;
   whyYou: string;
-  brandValues: string;
+  brandValues: string[];
+  tonePersonality: Record<string, number>;
+  visualStyle: Record<string, number>;
   controversialBelief: string;
+  proofPoints: string[];
+  proofPointsOther: string;
   notDoing: string;
   customerAlternatives: string;
   uniqueApproach: string;
@@ -399,6 +404,11 @@ const questions = [
     type: 'tone-sliders', // Professional↔Casual, Bold↔Conservative, etc.
   },
   {
+    title: 'What\'s your visual design style?',
+    field: 'visualStyle',
+    type: 'visual-style-sliders', // Clean↔Ornate, Minimal↔Maximalist, etc.
+  },
+  {
     title: 'Optional: Contrarian or unconventional beliefs?',
     field: 'controversialBelief',
     type: 'textarea', // optional
@@ -451,6 +461,200 @@ export function OnboardingWizard({
   onComplete,
   onClose,
 }: OnboardingWizardV3SimpleProps) {
+  // Brand Values organized by strategic tiers
+  const brandValuesTiers = {
+    'Core Character': {
+      color: 'bg-red-500',
+      description: 'Fundamental character traits that define who you are',
+      values: [
+        'Authenticity', 'Integrity', 'Trust', 'Honesty', 'Transparency',
+        'Reliability', 'Consistency', 'Accountability', 'Credibility'
+      ]
+    },
+    'Human-Centered': {
+      color: 'bg-orange-500',
+      description: 'Values focused on human connection and relationships',
+      values: [
+        'Empathy', 'Respect', 'Inclusivity', 'Diversity', 'Compassion',
+        'Community', 'Collaboration', 'Fairness', 'Kindness'
+      ]
+    },
+    'Innovation & Growth': {
+      color: 'bg-blue-500',
+      description: 'Forward-thinking values that drive progress',
+      values: [
+        'Innovation', 'Excellence', 'Agility', 'Adaptability', 'Creativity',
+        'Learning', 'Growth', 'Progress', 'Vision', 'Leadership'
+      ]
+    },
+    'Performance': {
+      color: 'bg-green-500',
+      description: 'Values that drive results and execution',
+      values: [
+        'Results-Oriented', 'Quality', 'Efficiency', 'Precision', 'Dedication',
+        'Commitment', 'Persistence', 'Focus', 'Achievement'
+      ]
+    },
+    'Service & Impact': {
+      color: 'bg-purple-500',
+      description: 'Values centered on making a positive difference',
+      values: [
+        'Customer-Centricity', 'Sustainability', 'Social Responsibility', 'Service',
+        'Impact', 'Purpose', 'Stewardship', 'Giving Back', 'Legacy'
+      ]
+    },
+    'Culture & Spirit': {
+      color: 'bg-pink-500',
+      description: 'Values that shape organizational culture and energy',
+      values: [
+        'Passion', 'Courage', 'Simplicity', 'Fun', 'Energy',
+        'Optimism', 'Humility', 'Balance', 'Freedom'
+      ]
+    }
+  };
+
+  // Tone of Voice Sliders Configuration with examples for each step
+  const toneSliders = [
+    {
+      key: 'formality',
+      leftLabel: 'Formal',
+      rightLabel: 'Casual',
+      description: 'How polished or relaxed the communication feels',
+      examples: [
+        'We cordially invite you to explore our comprehensive suite of professional services.',
+        'We welcome you to review our range of professional offerings.',
+        'Take a look at what we offer and see how we can help.',
+        'Check out our services and let\'s see what works for you.',
+        'Hey! Let\'s dive in and find something awesome for you!'
+      ]
+    },
+    {
+      key: 'playfulness',
+      leftLabel: 'Serious',
+      rightLabel: 'Playful',
+      description: 'Whether the brand speaks with gravitas or adds humor and levity',
+      examples: [
+        'Our solutions deliver measurable results through proven methodologies.',
+        'We bring solid results with approaches that work.',
+        'We get you results that matter, plain and simple.',
+        'We help you win with strategies that actually work (no fluff).',
+        'We make magic happen 🎩✨ (okay, it\'s really just smart strategy, but still pretty cool!)'
+      ]
+    },
+    {
+      key: 'boldness',
+      leftLabel: 'Conservative',
+      rightLabel: 'Bold',
+      description: 'Risk-taking and provocative vs. cautious and restrained',
+      examples: [
+        'Our approach aligns with industry best practices and established standards.',
+        'We follow proven methods while staying current with trends.',
+        'We blend tried-and-true tactics with fresh thinking.',
+        'We challenge the status quo and aren\'t afraid to try new things.',
+        'Forget everything you know. We\'re rewriting the rules entirely.'
+      ]
+    },
+    {
+      key: 'warmth',
+      leftLabel: 'Neutral',
+      rightLabel: 'Warm/Emotional',
+      description: 'Detached/objective vs. empathetic and approachable',
+      examples: [
+        'The data indicates a positive correlation with desired outcomes.',
+        'Results show this approach works well for most businesses.',
+        'We understand this works because we\'ve seen it succeed.',
+        'We get it—you\'re looking for something that actually makes a difference.',
+        'We feel you. This journey isn\'t easy, but we\'re here with you every step.'
+      ]
+    },
+    {
+      key: 'complexity',
+      leftLabel: 'Simple',
+      rightLabel: 'Sophisticated',
+      description: 'Straightforward everyday language vs. layered and nuanced',
+      examples: [
+        'We make it easy. You\'ll understand everything right away.',
+        'We keep things clear while covering all the important details.',
+        'We explain things well, with enough depth to matter.',
+        'Our approach weaves together multiple strategic frameworks and insights.',
+        'We synthesize multifaceted paradigms through our proprietary methodology.'
+      ]
+    },
+    {
+      key: 'authority',
+      leftLabel: 'Friendly/Peer',
+      rightLabel: 'Expert/Authoritative',
+      description: 'Speaking like a peer vs. speaking like a thought leader',
+      examples: [
+        'We\'ve been there too, and here\'s what we learned along the way.',
+        'We\'ve worked through this ourselves and can share what helped.',
+        'Based on our experience, here\'s what tends to work best.',
+        'Our expertise has shown that this approach delivers optimal results.',
+        'As industry pioneers, we\'ve established the definitive framework for success.'
+      ]
+    },
+    {
+      key: 'energy',
+      leftLabel: 'Calm',
+      rightLabel: 'Energetic',
+      description: 'Quiet confidence vs. high-energy and motivational',
+      examples: [
+        'We provide steady, reliable support for your long-term goals.',
+        'We offer consistent guidance to help you make progress.',
+        'We\'re here to help you build momentum and see real change.',
+        'Let\'s accelerate your success and make things happen!',
+        'IT\'S TIME TO IGNITE YOUR POTENTIAL AND DOMINATE YOUR MARKET! 🚀🔥'
+      ]
+    },
+    {
+      key: 'quirkiness',
+      leftLabel: 'Conventional',
+      rightLabel: 'Quirky/Unique',
+      description: 'Standard phrasing vs. distinctive personality markers',
+      examples: [
+        'Our team is committed to helping you achieve your business objectives.',
+        'We\'re dedicated to helping your business grow and succeed.',
+        'We\'re like your business\'s best friend (minus the awkward hugs).',
+        'Think of us as the Swiss Army knife of [industry]—minus the tiny scissors nobody uses.',
+        'We\'re the midnight oil burners, the puzzle solvers, the "did-they-really-just-say-that" brand nerds. 🤓'
+      ]
+    }
+  ];
+
+  // Visual Style Sliders Configuration
+  const visualStyleSliders = [
+    {
+      key: 'minimalism',
+      leftLabel: 'Minimal',
+      rightLabel: 'Maximal',
+      description: 'Clean, spacious design vs. rich, layered visual elements'
+    },
+    {
+      key: 'colorPalette',
+      leftLabel: 'Monochrome',
+      rightLabel: 'Vibrant',
+      description: 'Restrained color scheme vs. bold, expressive colors'
+    },
+    {
+      key: 'geometry',
+      leftLabel: 'Geometric',
+      rightLabel: 'Organic',
+      description: 'Sharp, structured shapes vs. flowing, natural forms'
+    },
+    {
+      key: 'modernVintage',
+      leftLabel: 'Modern',
+      rightLabel: 'Vintage',
+      description: 'Contemporary, cutting-edge aesthetic vs. nostalgic, classic feel'
+    },
+    {
+      key: 'luxuryAccessible',
+      leftLabel: 'Luxury',
+      rightLabel: 'Accessible',
+      description: 'Premium, exclusive look vs. approachable, everyday feel'
+    }
+  ];
+
   const [showPathSelection, setShowPathSelection] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -489,6 +693,7 @@ export function OnboardingWizard({
     employeeCount: '11-50',
     annualRevenue: '$1M-$10M',
     brandAssets: [],
+    companyDescription: '',
     services: [{ name: '', description: '', url: '' }],
     serviceDelivery: '',
     uniqueValue: '',
@@ -504,8 +709,12 @@ export function OnboardingWizard({
     desiredTransformation: '',
     whyNow: '',
     whyYou: '',
-    brandValues: '',
+    brandValues: [],
+    tonePersonality: {},
+    visualStyle: {},
     controversialBelief: '',
+    proofPoints: [],
+    proofPointsOther: '',
     notDoing: '',
     customerAlternatives: '',
     uniqueApproach: '',
@@ -2493,6 +2702,323 @@ export function OnboardingWizard({
                   );
                 })}
               </div>
+            </div>
+          </div>
+        );
+
+      case 'multi-chip-select':
+        // Handle different multi-chip-select questions
+        if (question.field === 'brandValues') {
+          return (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold">{question.title}</h2>
+                <p className="text-muted-foreground">
+                  Select values that resonate with your brand (choose as many as you like)
+                </p>
+              </div>
+
+              {renderGuidanceTabs()}
+
+              <div className="space-y-6">
+                {Object.entries(brandValuesTiers).map(([tierName, tierData]) => (
+                  <div key={tierName} className="p-6 border border-border rounded-xl bg-card/50 hover:bg-card/80 transition-colors">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className={cn('w-3 h-3 rounded-full', tierData.color)} />
+                      <h3 className="font-semibold text-lg">{tierName}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">{tierData.description}</p>
+                    <div className="grid grid-cols-4 gap-3">
+                      {tierData.values.map((value) => {
+                        const isSelected = (formData.brandValues as string[]).includes(value);
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() => {
+                              const currentValues = formData.brandValues as string[];
+                              if (isSelected) {
+                                setFormData({
+                                  ...formData,
+                                  brandValues: currentValues.filter((v) => v !== value),
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  brandValues: [...currentValues, value],
+                                });
+                              }
+                            }}
+                            className={cn(
+                              'px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all',
+                              isSelected
+                                ? 'border-yellow-500 bg-yellow-500 text-white'
+                                : 'border-border hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'
+                            )}
+                          >
+                            {value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        if (question.field === 'proofPoints') {
+          const proofPointOptions = [
+            'Industry certifications',
+            'Awards and recognition',
+            'Years in business',
+            'Client testimonials',
+            'Case studies',
+            'Media mentions',
+            'Client logos/partnerships',
+            'Proprietary methodology',
+            'Team credentials',
+            'Published research',
+            'Speaking engagements',
+            'Community involvement',
+            'Other'
+          ];
+
+          return (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold">{question.title}</h2>
+                <p className="text-muted-foreground">
+                  What makes you credible and trustworthy? (select all that apply)
+                </p>
+              </div>
+
+              {renderGuidanceTabs()}
+
+              <div className="grid grid-cols-2 gap-3">
+                {proofPointOptions.map((option) => {
+                  const isSelected = formData.proofPoints.includes(option);
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => {
+                        if (isSelected) {
+                          setFormData({
+                            ...formData,
+                            proofPoints: formData.proofPoints.filter((p) => p !== option),
+                          });
+                        } else {
+                          setFormData({
+                            ...formData,
+                            proofPoints: [...formData.proofPoints, option],
+                          });
+                        }
+                      }}
+                      className={cn(
+                        'px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all text-left',
+                        isSelected
+                          ? 'border-yellow-500 bg-yellow-500 text-white'
+                          : 'border-border hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'
+                      )}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Show textarea when "Other" is selected */}
+              {formData.proofPoints.includes('Other') && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">
+                    Please specify other proof points:
+                  </label>
+                  <Textarea
+                    value={formData.proofPointsOther}
+                    onChange={(e) =>
+                      setFormData({ ...formData, proofPointsOther: e.target.value })
+                    }
+                    placeholder="Describe your other proof points..."
+                    className="w-full min-h-[100px] !bg-yellow-50/50 dark:!bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 focus-visible:!bg-blue-50/70 dark:focus-visible:!bg-blue-900/30 focus-visible:ring-blue-500 focus-visible:border-blue-400"
+                  />
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        // Default fallback for other multi-chip-select questions
+        return (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">{question.title}</h2>
+            <p className="text-muted-foreground">
+              Multi-chip select component for {question.field} coming soon...
+            </p>
+          </div>
+        );
+
+      case 'tone-sliders':
+        return (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">{question.title}</h2>
+              <p className="text-muted-foreground">
+                Adjust each slider to define your brand's personality
+              </p>
+            </div>
+
+            {renderGuidanceTabs()}
+
+            <div className="space-y-6">
+              {toneSliders.map((slider) => {
+                const currentValue = (formData.tonePersonality as Record<string, number>)[slider.key] ?? 50;
+                // Convert to 5 steps (0, 25, 50, 75, 100)
+                const stepValue = Math.round(currentValue / 25) * 25;
+                const exampleIndex = Math.round(currentValue / 25); // 0-4 index for examples
+
+                return (
+                  <div key={slider.key} className="p-6 border border-border rounded-xl bg-card/50 hover:bg-card/80 transition-colors">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-sm">{slider.leftLabel}</span>
+                        <span className="font-medium text-sm">{slider.rightLabel}</span>
+                      </div>
+
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="25"
+                        value={stepValue}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            tonePersonality: {
+                              ...(formData.tonePersonality as Record<string, number>),
+                              [slider.key]: parseInt(e.target.value),
+                            },
+                          });
+                        }}
+                        className="w-full h-2 bg-gradient-to-r from-gray-200 via-yellow-400 to-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                        style={{
+                          background: `linear-gradient(to right,
+                            rgb(229, 231, 235) 0%,
+                            rgb(250, 204, 21) ${stepValue}%,
+                            rgb(229, 231, 235) ${stepValue}%,
+                            rgb(229, 231, 235) 100%)`
+                        }}
+                      />
+
+                      <div className="flex justify-between px-1">
+                        {[0, 1, 2, 3, 4].map((step) => (
+                          <div
+                            key={step}
+                            className={cn(
+                              'w-2 h-2 rounded-full transition-all',
+                              step === exampleIndex
+                                ? 'bg-yellow-500 scale-125'
+                                : 'bg-gray-300 dark:bg-gray-600'
+                            )}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-muted-foreground text-center mb-2">
+                        {slider.description}
+                      </p>
+
+                      {/* Dynamic example that changes with slider */}
+                      {slider.examples && (
+                        <div className="mt-4 p-4 bg-yellow-50/50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                          <p className="text-xs font-medium text-yellow-700 dark:text-yellow-400 mb-2">Example:</p>
+                          <p className="text-sm text-foreground italic">
+                            "{slider.examples[exampleIndex]}"
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      case 'visual-style-sliders':
+        return (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">{question.title}</h2>
+              <p className="text-muted-foreground">
+                Adjust each slider to define your visual design preferences
+              </p>
+            </div>
+
+            {renderGuidanceTabs()}
+
+            <div className="space-y-6">
+              {visualStyleSliders.map((slider) => {
+                const currentValue = (formData.visualStyle as Record<string, number>)[slider.key] ?? 50;
+                // Convert to 5 steps (0, 25, 50, 75, 100)
+                const stepValue = Math.round(currentValue / 25) * 25;
+                const stepIndex = Math.round(currentValue / 25);
+
+                return (
+                  <div key={slider.key} className="p-6 border border-border rounded-xl bg-card/50 hover:bg-card/80 transition-colors">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-sm">{slider.leftLabel}</span>
+                        <span className="font-medium text-sm">{slider.rightLabel}</span>
+                      </div>
+
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="25"
+                        value={stepValue}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            visualStyle: {
+                              ...(formData.visualStyle as Record<string, number>),
+                              [slider.key]: parseInt(e.target.value),
+                            },
+                          });
+                        }}
+                        className="w-full h-2 bg-gradient-to-r from-gray-200 via-yellow-400 to-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                        style={{
+                          background: `linear-gradient(to right,
+                            rgb(229, 231, 235) 0%,
+                            rgb(250, 204, 21) ${stepValue}%,
+                            rgb(229, 231, 235) ${stepValue}%,
+                            rgb(229, 231, 235) 100%)`
+                        }}
+                      />
+
+                      <div className="flex justify-between px-1">
+                        {[0, 1, 2, 3, 4].map((step) => (
+                          <div
+                            key={step}
+                            className={cn(
+                              'w-2 h-2 rounded-full transition-all',
+                              step === stepIndex
+                                ? 'bg-yellow-500 scale-125'
+                                : 'bg-gray-300 dark:bg-gray-600'
+                            )}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-muted-foreground text-center">
+                        {slider.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         );
