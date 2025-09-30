@@ -18,7 +18,6 @@ import { getOrganizations } from '@/app/actions/organizations';
 import { getBusinesses } from '@/app/actions/businesses';
 import { getProjects } from '@/app/actions/projects';
 import { DashboardOrganizationActions } from '@/components/dashboard/organization-actions';
-import { BusinessOnboardingTable } from '@/components/business-onboarding-table';
 
 // Force dynamic rendering to prevent caching issues
 export const dynamic = 'force-dynamic';
@@ -215,8 +214,8 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Businesses Table */}
-        <BusinessOnboardingTable businesses={businesses} />
+        {/* Businesses Table - Temporarily removed */}
+        {/* <BusinessOnboardingTable businesses={businesses} /> */}
 
         {/* Quick Access Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

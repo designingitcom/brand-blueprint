@@ -16,11 +16,12 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
+  BarChart3,
 } from 'lucide-react';
 
 interface PathSelectionProps {
   onPathSelect: (
-    path: 'strategic-foundation' | 'quick-start' | 'build-from-scratch'
+    path: 'quick-start' | 'fast-track' | 'strategic-foundation'
   ) => void;
   onClose?: () => void;
 }
@@ -31,7 +32,7 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handlePathSelect = useCallback(
-    (pathId: 'strategic-foundation' | 'quick-start' | 'build-from-scratch') => {
+    (pathId: 'quick-start' | 'fast-track' | 'strategic-foundation') => {
       if (isProcessing) {
         console.log('Already processing, ignoring click');
         return; // Prevent double-clicks
@@ -57,11 +58,11 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
       id: 'strategic-foundation' as const,
       title: 'Strategic Foundation',
       icon: Target,
-      subtitle: 'Complete positioning strategy',
+      subtitle: 'Comprehensive strategy for maximum results',
       shortDescription:
         'Full strategic foundation with AI-powered insights and personalized activations.',
-      time: '15 min',
-      questions: '19 questions',
+      time: '30-40 min',
+      questions: '31 questions',
       perfectFor: [
         'Want maximum personalization',
         'Have 15 minutes to invest',
@@ -101,11 +102,11 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
       id: 'quick-start' as const,
       title: 'Quick Start',
       icon: Zap,
-      subtitle: 'Fast marketing activations',
+      subtitle: 'No questions. Add your business then choose your path',
       shortDescription:
         'Basic setup to get started quickly with core activations.',
-      time: '8 min',
-      questions: '11 steps',
+      time: '5-8 min',
+      questions: '6 questions',
       perfectFor: [
         'Need help today',
         'Know your positioning',
@@ -133,32 +134,42 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Replace with actual video URL
     },
     {
-      id: 'build-from-scratch' as const,
-      title: 'Build From Scratch',
-      icon: Building2,
-      subtitle: 'Fresh start or rebrand',
+      id: 'fast-track' as const,
+      title: 'Fast Track',
+      icon: BarChart3,
+      subtitle: 'Faster path to activation with optional depth',
       shortDescription:
-        'Step-by-step foundation building with full control over the process.',
-      time: '2 min start',
-      questions: '2-4 hours later',
-      perfectFor: ['New business', 'Complete rebrand', 'Want full control'],
+        'Start with 12 core questions, then optionally enhance with deeper strategic insights.',
+      time: '15-40 min',
+      questions: '12-31 questions',
+      perfectFor: [
+        'Want flexibility to build depth',
+        'Have some positioning clarity',
+        'Like incremental improvements',
+      ],
       whatYouDo: [
-        'Add basic business info',
-        'Choose your starting point',
-        'Build strategy step-by-step',
+        'Complete 3 foundation phases (12 questions)',
+        'Choose optional enhancement blocks',
+        'Build your foundation progressively',
       ],
       whatYouGet: [
-        { text: 'Access to all foundation modules', type: 'success' as const },
-        { text: 'Choose your own path', type: 'success' as const },
-        { text: 'No positioning assumptions', type: 'success' as const },
-        { text: 'Activations locked initially', type: 'warning' as const },
+        {
+          text: 'Basic foundation (65% effectiveness)',
+          type: 'success' as const,
+        },
+        {
+          text: 'Optional enhancement to 85%+ effectiveness',
+          type: 'success' as const,
+        },
+        { text: 'Progressive depth building', type: 'success' as const },
+        { text: 'Can upgrade to complete anytime', type: 'success' as const },
       ],
       whyChoose:
-        'Complete Module 1 or Quick Onboarding before accessing marketing activations.',
-      buttonText: 'Start From Scratch',
+        'Perfect balance of speed and quality. Build foundation incrementally with optional depth.',
+      buttonText: 'Start Fast Track',
       recommended: false,
-      callout: 'Fastest',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Replace with actual video URL
+      callout: 'Flexible',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     },
   ];
 
@@ -379,7 +390,9 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
                               ? 'Why choose this: '
                               : path.id === 'quick-start'
                                 ? 'Important: '
-                                : 'Note: '}
+                                : path.id === 'fast-track'
+                                  ? 'Perfect for: '
+                                  : 'Note: '}
                           </span>
                           {path.whyChoose}
                         </div>
@@ -449,11 +462,11 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
 
                 <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-600">
                   <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Building2 className="h-6 w-6 text-muted-foreground" />
+                    <BarChart3 className="h-6 w-6 text-muted-foreground" />
                   </div>
-                  <h4 className="font-medium mb-2">Build From Scratch</h4>
+                  <h4 className="font-medium mb-2">Fast Track</h4>
                   <p className="text-muted-foreground text-xs">
-                    Step-by-step foundation building with full control
+                    Build at your pace with optional depth
                   </p>
                 </div>
               </div>

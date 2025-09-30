@@ -878,6 +878,49 @@ export const useOnboardingStore = create<OnboardingStore>()(
             confidenceLevels: state.ai.confidenceLevels,
           },
         }),
+        onRehydrateStorage: () => {
+          return (state, error) => {
+            if (error) {
+              console.warn('Failed to rehydrate onboarding store, clearing localStorage:', error);
+              // Clear the corrupted data
+              try {
+                localStorage.removeItem('onboarding-store');
+              } catch (e) {
+                console.warn('Failed to clear localStorage:', e);
+              }
+            }
+          };
+        },
+        storage: {
+          getItem: (name) => {
+            try {
+              const item = localStorage.getItem(name);
+              return item ? JSON.parse(item) : null;
+            } catch (error) {
+              console.warn('Failed to parse localStorage item, clearing:', error);
+              try {
+                localStorage.removeItem(name);
+              } catch (e) {
+                console.warn('Failed to clear corrupted localStorage item:', e);
+              }
+              return null;
+            }
+          },
+          setItem: (name, value) => {
+            try {
+              localStorage.setItem(name, JSON.stringify(value));
+            } catch (error) {
+              console.warn('Failed to save to localStorage:', error);
+            }
+          },
+          removeItem: (name) => {
+            try {
+              localStorage.removeItem(name);
+            } catch (error) {
+              console.warn('Failed to remove from localStorage:', error);
+            }
+          },
+        },
       }
     )
   )

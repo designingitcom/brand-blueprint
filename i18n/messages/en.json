@@ -45,6 +45,7 @@
   },
   "businesses": {
     "title": "Businesses",
+    "subtitle": "Manage all businesses across organizations",
     "create": "Create Business",
     "edit": "Edit Business",
     "name": "Business Name",
@@ -59,7 +60,10 @@
     "totalBusinesses": "Total Businesses",
     "activeProjects": "Active Projects",
     "teamMembers": "Team Members",
-    "totalRevenue": "Total Revenue"
+    "totalRevenue": "Total Revenue",
+    "allOrganizations": "All Organizations",
+    "allTypes": "All Types",
+    "loadingBusinesses": "Loading businesses..."
   },
   "organizations": {
     "title": "Organizations",

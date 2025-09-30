@@ -352,7 +352,7 @@ export function BusinessesList({
                 {/* Show Start Onboarding for pending businesses */}
                 {(business.status_enum === 'pending' || business.onboarding_completed === false) && (
                   <Button asChild variant="default" size="sm" className="gap-2">
-                    <Link href={`/onboarding?business=${business.id}`}>
+                    <Link href={`/en/onboarding-v3-simple?business=${business.id}`}>
                       Start Onboarding
                       <ArrowRight className="h-3 w-3" />
                     </Link>

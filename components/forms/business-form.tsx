@@ -40,7 +40,7 @@ import {
   type CreateBusinessData,
   type UpdateBusinessData,
 } from '@/app/actions/businesses';
-import { BusinessOnboardingPrompt } from '@/components/business-onboarding-prompt';
+import { useRouter } from 'next/navigation';
 
 // Schema that matches the exact database structure
 const businessSchema = z.object({
@@ -96,12 +96,11 @@ export function BusinessForm({
   onSuccess,
   trigger,
 }: BusinessFormProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [hasManuallyEditedSlug, setHasManuallyEditedSlug] = useState(false);
-  const [showOnboardingPrompt, setShowOnboardingPrompt] = useState(false);
-  const [createdBusiness, setCreatedBusiness] = useState<any>(null);
   const isEditing = !!business?.id;
 
   const form = useForm<BusinessFormData>({
@@ -165,9 +164,8 @@ export function BusinessForm({
       setHasManuallyEditedSlug(false);
       
       if (!isEditing && result.data) {
-        // Show onboarding prompt for new businesses
-        setCreatedBusiness(result.data);
-        setShowOnboardingPrompt(true);
+        // Redirect to onboarding wizard for new businesses
+        router.push(`/en/onboarding-v3-simple?businessId=${result.data.id}`);
       } else if (isEditing) {
         // Refresh the page to see changes for edits
         window.location.reload();
@@ -423,15 +421,6 @@ export function BusinessForm({
       </DialogContent>
     </Dialog>
 
-    {/* Onboarding Prompt Modal */}
-    {showOnboardingPrompt && createdBusiness && (
-      <BusinessOnboardingPrompt
-        business={createdBusiness}
-        isOwner={true}
-        showAsModal={true}
-        onClose={() => setShowOnboardingPrompt(false)}
-      />
-    )}
     </>
   );
 }
