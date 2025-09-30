@@ -162,18 +162,18 @@ const pathConfigurations = {
         title: 'ICP & Persona',
         icon: User,
         questionCount: 2,
-        questions: [22, 23], // ICP & Persona with special UI (indices 22-23)
+        questions: [23, 24], // ICP & Persona with special UI (indices 23-24)
       },
       {
         id: 'brand-dna',
         title: 'Brand DNA & Communication (Optional)',
         icon: Award,
         questionCount: 7,
-        questions: [32, 24, 25, 26, 27, 28, 29], // Enhancement question + Phase 6 questions (indices 24-29)
+        questions: [32, 25, 26, 27, 28, 29, 30], // Enhancement question + Phase 6 questions (indices 25-30)
         optional: true,
       },
     ],
-    questions: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 31, 22, 23, 32], // Base questions + P4 enhancement + ICP/Persona + P6 enhancement
+    questions: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 31, 15, 16, 17, 18, 19, 20, 21, 23, 24, 32, 25, 26, 27, 28, 29, 30], // Base questions + P4 enhancement + P4 questions + ICP/Persona + P6 enhancement + P6 questions
   },
   'strategic-foundation': {
     sections: [
@@ -589,9 +589,9 @@ export function OnboardingWizardV3Simple({
 
     // Smart routing for Fast Track path - skip optional sections if user chooses "no" or "skip"
     if (formData.selectedPath === 'fast-track') {
-      // If on P4 enhancement question (31) and user selected "no", skip to ICP/Persona (22)
+      // If on P4 enhancement question (31) and user selected "no", skip to ICP/Persona (23)
       if (currentQuestion === 31 && formData.wantPhase4 === 'no') {
-        setCurrentQuestion(22);
+        setCurrentQuestion(23);
         return;
       }
       // If on P4 enhancement question (31) and user selected "yes", continue to next P4 question (15)
@@ -600,14 +600,14 @@ export function OnboardingWizardV3Simple({
         return;
       }
 
-      // After last P4 question (21), go to ICP/Persona (22)
+      // After last P4 question (21), go to ICP/Persona (23)
       if (currentQuestion === 21) {
-        setCurrentQuestion(22);
+        setCurrentQuestion(23);
         return;
       }
 
-      // After last ICP/Persona question (23), go to P6 enhancement question (32)
-      if (currentQuestion === 23) {
+      // After last ICP/Persona question (24), go to P6 enhancement question (32)
+      if (currentQuestion === 24) {
         setCurrentQuestion(32);
         return;
       }
