@@ -13,7 +13,7 @@ export default function OnboardingPage() {
   };
 
   const handleClose = () => {
-    router.push('/');
+    router.push('/dashboard');
   };
 
   return (

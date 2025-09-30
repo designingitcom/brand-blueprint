@@ -2706,6 +2706,205 @@ export function OnboardingWizard({
           </div>
         );
 
+      case 'segment-selection':
+        return (
+          <SegmentSelection
+            value={formData.primarySegment || ''}
+            onChange={(value) => setFormData({ ...formData, primarySegment: value })}
+          />
+        );
+
+      case 'persona-selection':
+        const personaCards = [
+          {
+            id: 'ceo-founder',
+            name: 'CEO/Founder',
+            description: 'Visionary leader driving business growth and strategy',
+            icon: '👔',
+            traits: ['Strategic thinking', 'Budget authority', 'Long-term vision'],
+          },
+          {
+            id: 'cto-tech',
+            name: 'CTO/Tech Lead',
+            description: 'Technology decision maker and technical expert',
+            icon: '💻',
+            traits: ['Technical expertise', 'Innovation driven', 'Security conscious'],
+          },
+          {
+            id: 'cmo-marketing',
+            name: 'CMO/Marketing Director',
+            description: 'Marketing leader focused on brand and growth',
+            icon: '📈',
+            traits: ['Brand conscious', 'ROI focused', 'Customer-centric'],
+          },
+          {
+            id: 'coo-operations',
+            name: 'COO/Operations Manager',
+            description: 'Operations leader optimizing processes and efficiency',
+            icon: '⚙️',
+            traits: ['Process optimization', 'Efficiency focused', 'Quality control'],
+          },
+          {
+            id: 'sales-director',
+            name: 'Sales Director',
+            description: 'Revenue leader driving sales growth',
+            icon: '🎯',
+            traits: ['Revenue focused', 'Relationship builder', 'Goal oriented'],
+          },
+          {
+            id: 'product-manager',
+            name: 'Product Manager',
+            description: 'Product strategy and roadmap owner',
+            icon: '🚀',
+            traits: ['User-focused', 'Data-driven', 'Strategic planning'],
+          },
+        ];
+
+        return (
+          <div className="space-y-6">
+            {/* AI Suggestion Box */}
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-green-600 dark:text-green-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+                    AI-Generated Persona Suggestions
+                  </h3>
+                  <p className="text-sm text-green-700 dark:text-green-300">
+                    Based on your market segment ({formData.primarySegment || 'your selection'}), we've generated ideal customer personas. Associate each persona with your selected ICP using the dropdown.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Header */}
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">{question.title}</h2>
+              <p className="text-muted-foreground">
+                Review AI-generated personas and associate them with your ICP
+              </p>
+            </div>
+
+            {renderGuidanceTabs()}
+
+            {/* Persona Cards with Dropdowns */}
+            <div className="grid grid-cols-1 gap-4">
+              {personaCards.map((persona) => {
+                const personaData = (formData.selectedPersona as any)?.[persona.id] || { icp: 'none', selected: false };
+                const isSelected = personaData.selected;
+
+                return (
+                  <div
+                    key={persona.id}
+                    className={cn(
+                      'relative border rounded-lg p-4 transition-all duration-200',
+                      isSelected
+                        ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/10 shadow-md'
+                        : 'border-border bg-card hover:border-gray-300'
+                    )}
+                  >
+                    {/* Dropdown in top right */}
+                    <div className="absolute top-3 right-3">
+                      <Select
+                        value={personaData.icp}
+                        onValueChange={(value) => {
+                          const currentPersonas = typeof formData.selectedPersona === 'object'
+                            ? formData.selectedPersona
+                            : {};
+
+                          setFormData({
+                            ...formData,
+                            selectedPersona: {
+                              ...(currentPersonas as any),
+                              [persona.id]: {
+                                icp: value,
+                                selected: value !== 'none',
+                              },
+                            },
+                          });
+                        }}
+                      >
+                        <SelectTrigger className="w-32 h-8 text-xs">
+                          <SelectValue placeholder="Associate ICP..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="primary">
+                            {formData.primarySegment || 'Primary ICP'}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* AI Badge */}
+                    <div className="flex items-center gap-1 mb-2">
+                      <div className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800 border border-green-200">
+                        <Sparkles className="h-3 w-3 mr-1" />
+                        AI Generated
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="pr-36">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-3xl">{persona.icon}</span>
+                        <h4 className="font-semibold text-lg">{persona.name}</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        {persona.description}
+                      </p>
+
+                      {/* Key Traits */}
+                      <div className="flex flex-wrap gap-1">
+                        {persona.traits.map((trait, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded"
+                          >
+                            {trait}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Selection Badge */}
+                    {isSelected && (
+                      <div className="absolute bottom-3 left-3">
+                        <div className="inline-flex items-center px-2 py-1 rounded bg-yellow-500 text-white text-xs font-medium">
+                          Associated with {personaData.icp === 'primary' ? formData.primarySegment : 'ICP'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Selection Summary */}
+            {(() => {
+              const selectedPersonas = Object.entries((formData.selectedPersona as any) || {})
+                .filter(([_, data]: any) => data.selected)
+                .map(([id, _]) => personaCards.find(p => p.id === id)?.name)
+                .filter(Boolean);
+
+              return selectedPersonas.length > 0 ? (
+                <div className="bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                  <div className="space-y-2">
+                    <p className="font-medium text-yellow-800 dark:text-yellow-200">
+                      Selected Personas:
+                    </p>
+                    <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                      {selectedPersonas.join(', ')}
+                    </p>
+                  </div>
+                </div>
+              ) : null;
+            })()}
+          </div>
+        );
+
       case 'multi-chip-select':
         // Handle different multi-chip-select questions
         if (question.field === 'brandValues') {
@@ -2845,6 +3044,80 @@ export function OnboardingWizard({
                   />
                 </div>
               )}
+            </div>
+          );
+        }
+
+        if (question.field === 'businessType') {
+          const businessTypeOptions = [
+            'B2B (Business-to-Business)',
+            'B2C (Business-to-Consumer)',
+            'SaaS (Software as a Service)',
+            'E-commerce',
+            'Professional Services',
+            'Agency',
+            'Consulting',
+            'Nonprofit',
+            'Healthcare',
+            'Education',
+            'Manufacturing',
+            'Retail',
+            'Restaurant/Hospitality',
+            'Real Estate',
+            'Financial Services',
+            'Technology/Software',
+            'Other'
+          ];
+
+          return (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold">{question.title}</h2>
+                <p className="text-muted-foreground">
+                  Select all that apply to your business model
+                </p>
+              </div>
+
+              {renderGuidanceTabs()}
+
+              <div className="grid grid-cols-2 gap-3">
+                {businessTypeOptions.map((option) => {
+                  const isSelected = formData.businessType === option || (Array.isArray(formData.businessType) && formData.businessType.includes(option));
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => {
+                        // Convert to array if needed
+                        const currentTypes = Array.isArray(formData.businessType)
+                          ? formData.businessType
+                          : formData.businessType ? [formData.businessType] : [];
+
+                        if (isSelected) {
+                          const newTypes = currentTypes.filter((t) => t !== option);
+                          setFormData({
+                            ...formData,
+                            businessType: newTypes.length === 1 ? newTypes[0] : newTypes,
+                          });
+                        } else {
+                          setFormData({
+                            ...formData,
+                            businessType: [...currentTypes, option],
+                          });
+                        }
+                      }}
+                      className={cn(
+                        'px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all text-left',
+                        isSelected
+                          ? 'border-yellow-500 bg-yellow-500 text-white'
+                          : 'border-border hover:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20'
+                      )}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           );
         }
