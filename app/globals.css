@@ -1,26 +1,26 @@
 @import 'tailwindcss';
 
 :root {
-  /* BrandBlueprint light theme - test version */
+  /* BrandBlueprint light theme - black theme */
   --background: 0 0% 98%; /* #FAFAFA - Light background */
   --foreground: 0 0% 10%; /* #1A1A1A - Dark text */
   --card: 0 0% 100%; /* #FFFFFF - White cards */
   --card-foreground: 0 0% 10%; /* #1A1A1A - Dark text on cards */
   --popover: 0 0% 100%; /* #FFFFFF - White popover */
   --popover-foreground: 0 0% 10%; /* #1A1A1A - Dark text on popover */
-  --primary: 48 100% 45%; /* #E6B800 - Slightly darker yellow for accessibility */
-  --primary-foreground: 0 0% 0%; /* Black text on yellow */
+  --primary: 0 0% 9%; /* #171717 - Near black (neutral-900) */
+  --primary-foreground: 0 0% 98%; /* #FAFAFA - White text on black */
   --secondary: 0 0% 96%; /* #F5F5F5 - Light gray */
   --secondary-foreground: 0 0% 20%; /* #333333 - Dark gray text */
   --muted: 0 0% 94%; /* #F0F0F0 - Muted background */
   --muted-foreground: 0 0% 45%; /* #737373 - Medium gray text */
-  --accent: 48 100% 45%; /* #E6B800 - Same as primary */
-  --accent-foreground: 0 0% 0%; /* Black text on accent */
+  --accent: 0 0% 96%; /* #F5F5F5 - Light gray accent */
+  --accent-foreground: 0 0% 9%; /* #171717 - Black text on accent */
   --destructive: 0 84% 60%; /* Keep red for destructive */
   --destructive-foreground: 0 0% 98%; /* Light text on red */
   --border: 0 0% 90%; /* #E5E5E5 - Light border */
   --input: 0 0% 100%; /* #FFFFFF - White input background */
-  --ring: 48 100% 45%; /* #E6B800 - Yellow focus ring */
+  --ring: 0 0% 9%; /* #171717 - Black focus ring */
   --radius: 1rem; /* 16px for cards */
 
   /* Status colors */
@@ -31,26 +31,26 @@
 }
 
 .dark {
-  /* BrandBlueprint dark theme - original dark theme */
+  /* BrandBlueprint dark theme - black theme */
   --background: 224 19% 7%; /* #0E0E10 */
   --foreground: 0 0% 95%;
   --card: 240 6% 10%; /* #17171A */
   --card-foreground: 0 0% 95%;
   --popover: 240 6% 10%;
   --popover-foreground: 0 0% 95%;
-  --primary: 48 100% 50%; /* #FFCC00 - Brand yellow */
-  --primary-foreground: 0 0% 0%;
+  --primary: 0 0% 98%; /* #FAFAFA - Light gray/white for dark mode */
+  --primary-foreground: 0 0% 9%; /* #171717 - Black text on light */
   --secondary: 240 7% 17%; /* #2A2A30 */
   --secondary-foreground: 0 0% 95%;
   --muted: 240 7% 17%;
   --muted-foreground: 240 5% 64%;
-  --accent: 48 100% 50%; /* #FFCC00 */
-  --accent-foreground: 0 0% 0%;
+  --accent: 0 0% 96%; /* #F5F5F5 - Light gray accent */
+  --accent-foreground: 0 0% 9%; /* #171717 - Black text */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 95%;
   --border: 240 7% 17%; /* #2A2A30 */
   --input: 240 7% 17%;
-  --ring: 48 100% 50%;
+  --ring: 0 0% 98%; /* #FAFAFA - Light focus ring for dark mode */
 }
 
 @theme inline {

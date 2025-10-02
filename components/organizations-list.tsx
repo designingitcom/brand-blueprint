@@ -152,8 +152,8 @@ export function OrganizationsList({ organizations }: OrganizationsListProps) {
             <div className="p-6 pb-4">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <span className="text-lg font-bold text-primary">
+                  <div className="w-12 h-12 bg-neutral-100 rounded-xl flex items-center justify-center">
+                    <span className="text-lg font-bold text-neutral-900">
                       {org.name.charAt(0)}
                     </span>
                   </div>

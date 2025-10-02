@@ -238,7 +238,7 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
                     className={cn(
                       'absolute -top-3 left-6 px-4 py-1 rounded-full text-sm font-medium',
                       path.recommended
-                        ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'
+                        ? 'bg-black text-white'
                         : path.callout === 'Activation'
                           ? 'bg-muted-foreground text-background'
                           : 'bg-secondary text-secondary-foreground'
@@ -255,7 +255,7 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
                           className={cn(
                             'h-6 w-6',
                             path.recommended
-                              ? 'text-yellow-500'
+                              ? 'text-black dark:text-white'
                               : 'text-muted-foreground'
                           )}
                         />
@@ -410,10 +410,10 @@ export function PathSelection({ onPathSelect, onClose }: PathSelectionProps) {
                       disabled={isProcessing}
                       className={cn(
                         'w-full flex items-center justify-center gap-2',
-                        'bg-primary text-primary-foreground hover:bg-primary/90',
+                        'bg-white dark:bg-neutral-100 text-black border-2 border-black hover:bg-neutral-50',
                         isProcessing && 'opacity-50 cursor-not-allowed'
                       )}
-                      variant="default"
+                      variant="outline"
                     >
                       {path.buttonText}
                       <ArrowRight className="h-4 w-4" />

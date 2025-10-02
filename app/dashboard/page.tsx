@@ -18,7 +18,6 @@ import { getOrganizations } from '@/app/actions/organizations';
 import { getBusinesses } from '@/app/actions/businesses';
 import { getProjects } from '@/app/actions/projects';
 import { DashboardOrganizationActions } from '@/components/dashboard/organization-actions';
-import { BusinessOnboardingTable } from '@/components/business-onboarding-table';
 
 // Force dynamic rendering to prevent caching issues
 export const dynamic = 'force-dynamic';
@@ -117,11 +116,11 @@ export default async function DashboardPage() {
         </div>
 
         {/* Organizations Table */}
-        <div className="bg-card rounded-2xl border border-border">
-          <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="bg-white rounded-2xl border border-neutral-200">
+          <div className="flex items-center justify-between p-6 border-b border-neutral-200">
             <div>
-              <h2 className="text-lg font-semibold">Organizations</h2>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="text-2xl font-bold text-neutral-900">Organizations</h2>
+              <p className="text-sm text-neutral-600">
                 Showing {Math.min(10, totalOrganizations)} of {totalOrganizations} organizations
               </p>
             </div>
@@ -132,24 +131,24 @@ export default async function DashboardPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-border">
+              <thead className="border-b border-neutral-200 bg-neutral-50">
                 <tr>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Organization
                   </th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Businesses
                   </th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Members
                   </th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Size
                   </th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Status
                   </th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                  <th className="text-left p-4 text-sm font-medium text-neutral-600">
                     Actions
                   </th>
                 </tr>
@@ -159,7 +158,7 @@ export default async function DashboardPage() {
                   <tr>
                     <td
                       colSpan={6}
-                      className="p-8 text-center text-muted-foreground"
+                      className="p-8 text-center text-neutral-500"
                     >
                       No organizations found. Create your first organization to
                       get started!
@@ -169,20 +168,20 @@ export default async function DashboardPage() {
                   organizations.map((org: any) => (
                     <tr
                       key={org.id}
-                      className="border-b border-border hover:bg-secondary/30"
+                      className="border-b border-neutral-200 hover:bg-neutral-50 transition-colors"
                     >
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <span className="text-xs font-bold text-primary">
+                          <div className="w-8 h-8 bg-neutral-100 rounded-lg flex items-center justify-center">
+                            <span className="text-xs font-bold text-neutral-900">
                               {org.name.charAt(0)}
                             </span>
                           </div>
                           <div>
                             <Link href={`/organizations/${org.slug || org.id}`} className="hover:underline">
-                              <p className="font-medium">{org.name}</p>
+                              <p className="font-medium text-neutral-900">{org.name}</p>
                             </Link>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-neutral-500">
                               {org.website || org.slug || 'No website'}
                             </p>
                           </div>
@@ -215,29 +214,26 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Businesses Table */}
-        <BusinessOnboardingTable businesses={businesses} />
-
         {/* Quick Access Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Platform Health */}
-          <div className="bg-card rounded-2xl border border-border p-6">
-            <h3 className="font-semibold mb-4">Platform Health</h3>
+          <div className="bg-white rounded-2xl border border-neutral-200 p-6 hover:border-neutral-300 transition-all hover:shadow-lg">
+            <h3 className="text-xl font-bold text-neutral-900 mb-4">Platform Health</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Uptime</span>
+                <span className="text-sm text-neutral-600">Uptime</span>
                 <span className="text-sm font-medium text-green-500">
                   99.9%
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-neutral-600">
                   Response Time
                 </span>
-                <span className="text-sm font-medium">127ms</span>
+                <span className="text-sm font-medium text-neutral-900">127ms</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-neutral-600">
                   AI Satisfaction
                 </span>
                 <span className="text-sm font-medium text-green-500">94%</span>
@@ -246,24 +242,24 @@ export default async function DashboardPage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-card rounded-2xl border border-border p-6">
-            <h3 className="font-semibold mb-4">Recent Activity</h3>
+          <div className="bg-white rounded-2xl border border-neutral-200 p-6 hover:border-neutral-300 transition-all hover:shadow-lg">
+            <h3 className="text-xl font-bold text-neutral-900 mb-4">Recent Activity</h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <div className="w-2 h-2 bg-green-500 rounded-full" />
-                <span className="text-muted-foreground">
+                <span className="text-neutral-600">
                   New project created
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                <span className="text-muted-foreground">
+                <span className="text-neutral-600">
                   Module M2 completed
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-primary rounded-full" />
-                <span className="text-muted-foreground">
+                <div className="w-2 h-2 bg-neutral-900 rounded-full" />
+                <span className="text-neutral-600">
                   AI features updated
                 </span>
               </div>
@@ -271,8 +267,8 @@ export default async function DashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-card rounded-2xl border border-border p-6">
-            <h3 className="font-semibold mb-4">Quick Actions</h3>
+          <div className="bg-white rounded-2xl border border-neutral-200 p-6 hover:border-neutral-300 transition-all hover:shadow-lg">
+            <h3 className="text-xl font-bold text-neutral-900 mb-4">Quick Actions</h3>
             <div className="space-y-2">
               <Link href="/workshop/demo-project" className="block">
                 <Button

@@ -263,7 +263,7 @@ export async function getBusinesses(): Promise<BusinessActionResult> {
 
     const { data: businesses, error } = await supabase
       .from('businesses')
-      .select('*')
+      .select('*, type:business_type')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
@@ -298,7 +298,7 @@ export async function getBusiness(slugOrId: string): Promise<BusinessActionResul
     // Check if the parameter looks like a UUID (ID) or a slug
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(slugOrId);
     
-    let query = supabase.from('businesses').select('*');
+    let query = supabase.from('businesses').select('*, type:business_type');
 
     if (isUUID) {
       query = query.eq('id', slugOrId);

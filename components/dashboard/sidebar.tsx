@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/lib/contexts/auth-context';
-import { Home, Users, Settings, LogOut, FolderOpen } from 'lucide-react';
+import { Home, Users, Settings, LogOut, FolderOpen, Building2, Briefcase, BookOpen, Wrench } from 'lucide-react';
 
 const navItems = [
   {
@@ -17,21 +17,33 @@ const navItems = [
     badge: null,
   },
   {
+    title: 'Organizations',
+    href: '/organizations',
+    icon: Building2,
+    badge: null,
+  },
+  {
+    title: 'Businesses',
+    href: '/businesses',
+    icon: Briefcase,
+    badge: null,
+  },
+  {
     title: 'Projects',
     href: '/projects',
     icon: FolderOpen,
-    badge: '0',
+    badge: null,
   },
   {
-    title: 'Team',
-    href: '/team',
-    icon: Users,
-    badge: '1',
+    title: 'Workshop',
+    href: '/workshop',
+    icon: Wrench,
+    badge: null,
   },
   {
-    title: 'Settings',
-    href: '/settings',
-    icon: Settings,
+    title: 'Brand Guide',
+    href: '/brand-guide',
+    icon: BookOpen,
     badge: null,
   },
 ];
@@ -55,13 +67,13 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-64 flex-col bg-card border-r">
       {/* Logo/Brand */}
-      <div className="flex h-14 items-center border-b px-4 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="flex items-center gap-2 text-white">
-          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-            <span className="text-sm font-bold">S1</span>
+      <div className="flex h-14 items-center border-b px-4 bg-white">
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center">
+            <span className="text-sm font-bold text-white">B</span>
           </div>
-          <h2 className="text-lg font-semibold">BMW</h2>
-        </div>
+          <h2 className="text-lg font-semibold text-neutral-900">BRAND BLUEPRINT</h2>
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -75,10 +87,10 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:shadow-sm',
+                'flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-neutral-100 hover:text-neutral-900 hover:shadow-sm',
                 isActive
-                  ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-l-4 border-l-blue-600 shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-neutral-900 text-white shadow-sm'
+                  : 'text-neutral-600 hover:text-neutral-900'
               )}
             >
               <div className="flex items-center gap-3">
@@ -90,8 +102,8 @@ export function Sidebar() {
                   className={cn(
                     'text-xs px-2 py-0.5 rounded-full font-medium',
                     isActive
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-muted text-muted-foreground'
+                      ? 'bg-white text-neutral-900'
+                      : 'bg-neutral-100 text-neutral-600'
                   )}
                 >
                   {item.badge}

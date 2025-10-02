@@ -104,8 +104,6 @@ export default async function ProjectDetailPage({
 
   const StatusIcon = getStatusIcon(project.status || 'active');
 
-  const completionPercentage = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0;
-
   const projectStats = [
     { label: 'Budget Remaining', value: '$0', icon: DollarSign },
     { label: 'Modules Total', value: totalModules.toString(), icon: Clock },

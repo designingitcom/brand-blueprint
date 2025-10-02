@@ -200,16 +200,19 @@ export async function getOrganizations(): Promise<OrganizationActionResult> {
         `
         *,
         memberships!inner(role),
-        businesses:businesses(id, name, status, status_enum, onboarding_completed, onboarding_started_at, onboarding_current_step, created_at)
+        businesses(id, name, slug, onboarding_completed, onboarding_step, created_at)
       `
       )
       .eq('memberships.user_id', user.id);
 
     if (error) {
+      console.error('❌ Error fetching organizations:', error);
       return { error: error.message };
     }
 
-    return { success: true, data: organizations };
+    console.log(`✅ Found ${organizations?.length || 0} organization(s) for user ${user.id}`);
+
+    return { success: true, data: organizations || [] };
   } catch (error) {
     return {
       error:
@@ -239,7 +242,7 @@ export async function getOrganization(
         `
         *,
         memberships!inner(role),
-        businesses(id, name, slug, status, status_enum, onboarding_completed, onboarding_started_at, onboarding_current_step, created_at)
+        businesses(id, name, slug, onboarding_completed, onboarding_step, created_at)
       `
       )
       .eq('memberships.user_id', user.id);

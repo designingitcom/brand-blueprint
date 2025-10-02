@@ -23,7 +23,8 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public files (public folder)
      * - test (test pages)
+     * - api/lindy/webhooks (webhook endpoints)
      */
-    '/((?!_next/static|_next/image|favicon.ico|public|api/health|test).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public|api/health|api/lindy/webhooks|api/test-lindy-trigger|api/test-lindy-callback|test).*)',
   ],
 };

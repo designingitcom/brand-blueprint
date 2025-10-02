@@ -125,7 +125,7 @@ export function BusinessDetailContent({ business }: BusinessDetailContentProps) 
             </select>
             {needsOnboarding ? (
               <Button asChild className="gap-2">
-                <Link href={`/en/onboarding-v3-simple?business=${business.id}`>
+                <Link href={`/en/onboarding?business=${business.id}`}>
                   <PlayCircle className="h-4 w-4" />
                   {onboardingButtonText}
                 </Link>
@@ -280,7 +280,7 @@ export function BusinessDetailContent({ business }: BusinessDetailContentProps) 
             </p>
             {needsOnboarding ? (
               <Button asChild className="gap-2">
-                <Link href={`/en/onboarding-v3-simple?business=${business.id}`>
+                <Link href={`/en/onboarding?business=${business.id}`}>
                   <PlayCircle className="h-4 w-4" />
                   {onboardingButtonText}
                 </Link>

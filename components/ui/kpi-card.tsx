@@ -26,22 +26,22 @@ export function KPICard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden bg-card rounded-2xl border border-border p-6 transition-all duration-200',
-        'hover:border-border/50 hover:shadow-lg hover:shadow-black/20',
+        'relative overflow-hidden bg-white rounded-2xl border border-neutral-200 p-6 transition-all duration-300',
+        'hover:border-neutral-300 hover:shadow-lg',
         className
       )}
     >
       {/* Background Icon */}
       {Icon && (
-        <div className="absolute right-4 top-4 opacity-10">
-          <Icon className={cn('h-12 w-12', iconColor)} />
+        <div className="absolute right-4 top-4 opacity-5">
+          <Icon className="h-12 w-12 text-neutral-900" />
         </div>
       )}
 
       {/* Content */}
       <div className="relative space-y-2">
-        <p className="text-sm text-muted-foreground">{label}</p>
-        <p className="text-3xl font-bold tracking-tight">{value}</p>
+        <p className="text-sm text-neutral-600">{label}</p>
+        <p className="text-4xl font-bold tracking-tight text-neutral-900">{value}</p>
 
         {change !== undefined && (
           <div className="flex items-center gap-1.5">
@@ -52,7 +52,7 @@ export function KPICard({
                 'text-xs font-medium',
                 isPositive && 'text-green-500',
                 isNegative && 'text-red-500',
-                !isPositive && !isNegative && 'text-muted-foreground'
+                !isPositive && !isNegative && 'text-neutral-500'
               )}
             >
               {isPositive && '+'}
