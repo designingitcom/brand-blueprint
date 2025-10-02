@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { saveOnboardingProgress, getOrCreateBusiness, type OnboardingQ1to6Data } from '@/app/actions/save-onboarding';
+import { triggerLindyQ7Suggestions } from '@/app/actions/trigger-lindy';
+import { fetchLindyQ7Suggestions, pollForLindySuggestions } from '@/app/actions/fetch-lindy-suggestions';
+import { getUserOrganizations } from '@/app/actions/get-user-organizations';
+import { createClient } from '@/lib/supabase/client';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -18,6 +23,7 @@ import { StrategicResults } from '@/components/forms/strategic-results';
 import { SegmentSelection } from '@/components/forms/segment-selection';
 import { PersonaSelection } from '@/components/forms/persona-selection';
 import { MarketSegment, BuyerPersona } from '@/app/actions/businesses';
+import { AILoadingSkeleton, AIErrorState } from '@/components/ui/ai-loading-skeleton';
 import { cn } from '@/lib/utils';
 import {
   ChevronLeft,
@@ -62,7 +68,7 @@ interface FormData {
   industry: string;
   customIndustry: string;
   linkedinUrl: string;
-  businessType: string;
+  businessType: string | string[];
   yearsInBusiness: string;
   employeeCount: string;
   annualRevenue: string;
@@ -680,15 +686,26 @@ export function OnboardingWizard({
     Record<number, Array<{ role: 'user' | 'assistant'; content: string }>>
   >({});
   const [chatInput, setChatInput] = useState('');
+  const [currentBusinessId, setCurrentBusinessId] = useState<string | null>(businessId || null);
+  const [savingProgress, setSavingProgress] = useState(false);
+  const [lindyTriggered, setLindyTriggered] = useState(false);
+  const [lindySuggestions, setLindySuggestions] = useState<any[]>([]);
+  const [fetchingLindySuggestions, setFetchingLindySuggestions] = useState(false);
+  const [lindyError, setLindyError] = useState(false);
+  const [aiProcessingProgress, setAiProcessingProgress] = useState(0);
+  const [aiProcessingStatus, setAiProcessingStatus] = useState<string>('');
+  const [userOrganizations, setUserOrganizations] = useState<Array<{ id: string; name: string; role: string }>>([]);
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     selectedPath: 'strategic-foundation',
-    businessName: 'Example Corp',
-    website: 'https://example.com',
-    websiteContext: ['accurate'],
-    industry: 'Technology',
-    linkedinUrl: 'linkedin.com/company/example',
-    businessType: 'B2B',
+    businessName: '',
+    website: '',
+    websiteContext: [],
+    industry: '',
+    linkedinUrl: '',
+    businessType: [], // Empty array for multi-chip-select
+    customIndustry: '', // Initialize custom industry field
     yearsInBusiness: '3-5',
     employeeCount: '11-50',
     annualRevenue: '$1M-$10M',
@@ -779,8 +796,241 @@ export function OnboardingWizard({
     }
   }, [currentQuestion, formData.selectedPath]);
 
-  const handleNext = () => {
+  // Fetch user's organizations on mount
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      const result = await getUserOrganizations();
+      if (result.success && result.organizations) {
+        setUserOrganizations(result.organizations);
+        // Auto-select if user has only one organization
+        if (result.organizations.length === 1) {
+          setSelectedOrganizationId(result.organizations[0].id);
+        }
+      }
+    };
+    fetchOrganizations();
+  }, []);
+
+  // Get or create business on mount
+  useEffect(() => {
+    const initBusiness = async () => {
+      // Only create business if not provided as prop
+      if (!businessId) {
+        const result = await getOrCreateBusiness();
+        if (result.success && result.businessId) {
+          setCurrentBusinessId(result.businessId);
+        } else {
+          console.error('Failed to initialize business:', result.error);
+        }
+      }
+    };
+    initBusiness();
+  }, [businessId]);
+
+  // Fetch Lindy suggestions when user reaches Q7 (index 6)
+  // Use a ref to prevent infinite loop
+  const hasFetchedLindyRef = useRef(false);
+
+  useEffect(() => {
+    if (currentQuestion === 6 && currentBusinessId && lindySuggestions.length === 0 && !hasFetchedLindyRef.current) {
+      hasFetchedLindyRef.current = true;
+
+      const fetchSuggestions = async () => {
+        setFetchingLindySuggestions(true);
+        setLindyError(false);
+        console.log('📥 Fetching Lindy Q7 suggestions for display...');
+
+        try {
+          const result = await fetchLindyQ7Suggestions(currentBusinessId);
+          if (result.success && result.suggestions) {
+            setLindySuggestions(result.suggestions);
+            setAiSuggestions(prev => ({
+              ...prev,
+              6: result.suggestions.map((s: any) => {
+                // Handle different Lindy response formats
+                if (typeof s === 'string') return s;
+                if (s.text) return s.text;
+                if (s.suggestion) return s.suggestion;
+                return JSON.stringify(s); // Fallback for unexpected formats
+              })
+            }));
+            console.log('✅ Lindy suggestions loaded for Q7');
+          } else {
+            console.log('ℹ️ No Lindy suggestions available yet');
+            // Show loading state, user can use test button to trigger
+          }
+        } catch (error) {
+          console.error('❌ Error fetching Lindy suggestions:', error);
+          setLindyError(true);
+        } finally {
+          setFetchingLindySuggestions(false);
+        }
+      };
+      fetchSuggestions();
+    }
+
+    // Reset the ref when leaving Q7
+    if (currentQuestion !== 6) {
+      hasFetchedLindyRef.current = false;
+    }
+  }, [currentQuestion, currentBusinessId, lindySuggestions.length]);
+
+  // Real-time subscription for Lindy responses on Q7
+  useEffect(() => {
+    if (currentQuestion !== 6 || !currentBusinessId || lindySuggestions.length > 0) {
+      return;
+    }
+
+    console.log('🔔 Setting up real-time listener for Lindy responses...');
+
+    const supabase = createClient();
+
+    const channel = supabase
+      .channel(`lindy-responses-${currentBusinessId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'lindy_responses',
+          filter: `business_id=eq.${currentBusinessId}`
+        },
+        (payload) => {
+          console.log('🎯 Real-time update received from Lindy!', payload);
+          const newResponse = payload.new as any;
+
+          if (newResponse.suggestions && Array.isArray(newResponse.suggestions)) {
+            setLindySuggestions(newResponse.suggestions);
+            setAiSuggestions(prev => ({
+              ...prev,
+              6: newResponse.suggestions.map((s: any) => {
+                // Handle different Lindy response formats
+                if (typeof s === 'string') return s;
+                if (s.text) return s.text;
+                if (s.suggestion) return s.suggestion;
+                return JSON.stringify(s); // Fallback for unexpected formats
+              })
+            }));
+            setFetchingLindySuggestions(false);
+            setAiProcessingProgress(100);
+            setAiProcessingStatus('AI suggestions ready!');
+            console.log('✅ Lindy suggestions loaded via real-time update!');
+
+            // Clear progress after 2 seconds
+            setTimeout(() => {
+              setAiProcessingProgress(0);
+              setAiProcessingStatus('');
+            }, 2000);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('🔕 Cleaning up real-time listener');
+      supabase.removeChannel(channel);
+    };
+  }, [currentQuestion, currentBusinessId, lindySuggestions.length]);
+
+  // Save progress and trigger Lindy
+  const handleNext = async () => {
     if (isNextDisabled()) return; // Prevent if disabled
+
+    // Save progress for Q1-Q6 (questions 0-5 in array, but 1-6 for users)
+    if (currentQuestion >= 0 && currentQuestion <= 6 && currentBusinessId) {
+      setSavingProgress(true);
+
+      const onboardingData: OnboardingQ1to6Data = {
+        businessName: formData.businessName,
+        website: formData.website,
+        websiteContext: formData.websiteContext,
+        industry: formData.industry,
+        customIndustry: formData.customIndustry,
+        linkedinUrl: formData.linkedinUrl,
+        businessType: typeof formData.businessType === 'string'
+          ? [formData.businessType]
+          : (Array.isArray(formData.businessType) ? formData.businessType : []),
+        brandAssets: [], // TODO: Handle file uploads to Supabase storage
+        companyDescription: formData.companyDescription,
+      };
+
+      console.log('💾 Saving onboarding data:', onboardingData);
+
+      const result = await saveOnboardingProgress({
+        businessId: currentBusinessId,
+        data: onboardingData,
+        questionNumber: currentQuestion + 1, // Convert to 1-indexed
+        organizationId: currentQuestion === 0 ? selectedOrganizationId : undefined, // Only send org on Q1
+      });
+
+      if (!result.success) {
+        console.error('Failed to save progress:', result.error);
+      } else {
+        console.log('✅ Progress saved:', result.message);
+      }
+
+      setSavingProgress(false);
+
+      // After Q6 (index 5), trigger Lindy for Q7 suggestions
+      if (currentQuestion === 5 && !lindyTriggered) {
+        console.log('🚀 Triggering Lindy after Q6 completion...');
+        setLindyTriggered(true);
+        setAiProcessingStatus('Sending your business data to AI...');
+        setAiProcessingProgress(10);
+
+        const lindyResult = await triggerLindyQ7Suggestions({ businessId: currentBusinessId });
+        if (lindyResult.success) {
+          console.log('✅ Lindy triggered successfully');
+          setAiProcessingProgress(30);
+          setAiProcessingStatus('AI is analyzing your business...');
+
+          // Poll for suggestions (background, don't block navigation)
+          setTimeout(async () => {
+            setFetchingLindySuggestions(true);
+            setAiProcessingProgress(50);
+            setAiProcessingStatus('Researching your industry and competitors...');
+
+            // Poll for up to 2 minutes (20 attempts × 6 seconds = 120 seconds)
+            const suggestionsResult = await pollForLindySuggestions(currentBusinessId, 20, 6000);
+
+            setAiProcessingProgress(80);
+            setAiProcessingStatus('Generating personalized suggestions...');
+
+            if (suggestionsResult.success && suggestionsResult.suggestions) {
+              setLindySuggestions(suggestionsResult.suggestions);
+              // Also set in aiSuggestions for Q7 (index 6)
+              setAiSuggestions(prev => ({
+                ...prev,
+                6: suggestionsResult.suggestions.map((s: any) => {
+                  // Handle different Lindy response formats
+                  if (typeof s === 'string') return s;
+                  if (s.text) return s.text;
+                  if (s.suggestion) return s.suggestion;
+                  return JSON.stringify(s); // Fallback for unexpected formats
+                })
+              }));
+              setAiProcessingProgress(100);
+              setAiProcessingStatus('AI suggestions ready!');
+
+              // Clear progress after 2 seconds
+              setTimeout(() => {
+                setAiProcessingProgress(0);
+                setAiProcessingStatus('');
+              }, 2000);
+            } else {
+              setAiProcessingProgress(0);
+              setAiProcessingStatus('');
+            }
+            setFetchingLindySuggestions(false);
+          }, 0);
+        } else {
+          console.error('❌ Failed to trigger Lindy:', lindyResult.error);
+          setAiProcessingProgress(0);
+          setAiProcessingStatus('Failed to trigger AI. Please try again.');
+          setTimeout(() => setAiProcessingStatus(''), 3000);
+        }
+      }
+    }
 
     // Smart routing for Quick Start path
     if (formData.selectedPath === 'quick-start') {
@@ -926,6 +1176,19 @@ export function OnboardingWizard({
     // Only validate "Other" custom industry field
     if (question.field === 'industry' && fieldValue === 'Other' && !formData.customIndustry?.trim()) {
       return true;
+    }
+
+    // Validate organization selection on Q1 if user has multiple organizations
+    if (question.field === 'businessName' && userOrganizations.length > 1 && !selectedOrganizationId) {
+      return true;
+    }
+
+    // Validate business type selection - require at least one type
+    if (question.field === 'businessType') {
+      const types = Array.isArray(formData.businessType) ? formData.businessType : [];
+      if (types.length === 0) {
+        return true;
+      }
     }
 
     return false;
@@ -1409,6 +1672,49 @@ export function OnboardingWizard({
               className="w-full !bg-yellow-50/50 dark:!bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 focus-visible:!bg-blue-50/70 dark:focus-visible:!bg-blue-900/30 focus-visible:ring-blue-500 focus-visible:border-blue-400"
             />
 
+            {/* Organization Selector - Only show on Q1 (business name) */}
+            {question.field === 'businessName' && userOrganizations.length > 0 && (
+              <div className="space-y-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5 text-blue-600" />
+                  <Label htmlFor="organization" className="text-sm font-medium">
+                    {userOrganizations.length === 1
+                      ? 'Organization (auto-assigned)'
+                      : 'Select Organization'}
+                  </Label>
+                </div>
+                <Select
+                  value={selectedOrganizationId || ''}
+                  onValueChange={(value) => setSelectedOrganizationId(value)}
+                  disabled={userOrganizations.length === 1}
+                >
+                  <SelectTrigger id="organization" className="w-full">
+                    <SelectValue placeholder="Choose which organization this business belongs to" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {userOrganizations.map((org) => (
+                      <SelectItem key={org.id} value={org.id}>
+                        <div className="flex items-center justify-between w-full">
+                          <span>{org.name}</span>
+                          <span className="text-xs text-muted-foreground ml-2">({org.role})</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {userOrganizations.length === 1 && (
+                  <p className="text-xs text-blue-600 dark:text-blue-400">
+                    This business will be automatically assigned to your organization
+                  </p>
+                )}
+                {userOrganizations.length > 1 && !selectedOrganizationId && (
+                  <p className="text-xs text-orange-600 dark:text-orange-400">
+                    Please select an organization before proceeding
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Website Context Chips */}
             {question.field === 'website' && (
               <div className="space-y-3">
@@ -1595,8 +1901,38 @@ export function OnboardingWizard({
 
             {/* AI Suggestions Panel */}
             <div className="w-full">
-              {/* Auto-generate suggestions on first load */}
-              {(() => {
+              {/* Show loading skeleton while fetching Lindy suggestions for Q7 */}
+              {currentQuestion === 6 && fetchingLindySuggestions && (
+                <AILoadingSkeleton
+                  title="AI is analyzing your business information"
+                  subtitle="Generating personalized suggestions based on your answers... This usually takes 10-30 seconds."
+                  showRefresh={false}
+                  businessId={currentBusinessId || undefined}
+                  onRefresh={() => {
+                    // Reset fetch state and trigger refetch
+                    hasFetchedLindyRef.current = false;
+                    setLindySuggestions([]);
+                    setFetchingLindySuggestions(false);
+                  }}
+                />
+              )}
+
+              {/* Show error state if Lindy failed for Q7 */}
+              {currentQuestion === 6 && lindyError && !fetchingLindySuggestions && (
+                <AIErrorState
+                  title="Unable to load AI suggestions"
+                  message="There was an error connecting to the AI service. You can continue without suggestions or try again."
+                  onRetry={() => {
+                    setLindyError(false);
+                    setFetchingLindySuggestions(false);
+                    setLindySuggestions([]);
+                    hasFetchedLindyRef.current = false; // Reset to allow refetch
+                  }}
+                />
+              )}
+
+              {/* Auto-generate suggestions on first load for non-Q7 questions */}
+              {currentQuestion !== 6 && (() => {
                 if (
                   !aiSuggestions[currentQuestion] &&
                   !loadingSuggestions[currentQuestion]
@@ -1606,8 +1942,13 @@ export function OnboardingWizard({
                 return null;
               })()}
 
-              {(aiSuggestions[currentQuestion] ||
-                loadingSuggestions[currentQuestion]) && (
+              {/* Show regular AI suggestions panel */}
+              {/* For Q7: Show if we have suggestions OR if we're still fetching/waiting for real-time */}
+              {/* For other questions: Show if loading or have suggestions */}
+              {(currentQuestion === 6
+                ? (aiSuggestions[currentQuestion] || fetchingLindySuggestions)
+                : (aiSuggestions[currentQuestion] || loadingSuggestions[currentQuestion])
+               ) && (
                 <div className="w-full bg-purple-50 dark:bg-purple-950/20 rounded-xl border border-purple-200 dark:border-purple-800">
                   <div className="flex items-center justify-between p-4 border-b border-purple-200 dark:border-purple-800">
                     <div className="flex items-center gap-2">
@@ -1761,7 +2102,7 @@ export function OnboardingWizard({
                 <Input
                   id="customIndustry"
                   placeholder="Enter your industry..."
-                  value={formData.customIndustry}
+                  value={formData.customIndustry || ''}
                   onChange={e =>
                     setFormData({ ...formData, customIndustry: e.target.value })
                   }
@@ -3467,6 +3808,37 @@ export function OnboardingWizard({
               </div>
             </div>
           </div>
+
+          {/* AI Processing Progress Bar */}
+          {aiProcessingProgress > 0 && (
+            <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-purple-600 animate-pulse" />
+                  <span className="text-sm font-medium text-purple-900 dark:text-purple-100">
+                    {aiProcessingStatus}
+                  </span>
+                </div>
+                <span className="text-sm text-purple-600 dark:text-purple-400 font-semibold">
+                  {aiProcessingProgress}%
+                </span>
+              </div>
+              <div className="w-full bg-purple-200 dark:bg-purple-900/50 rounded-full h-2 overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${aiProcessingProgress}%` }}
+                />
+              </div>
+              {aiProcessingProgress === 100 && (
+                <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Click "Next" to see your personalized suggestions!</span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Progress Bar */}
           <div className="space-y-2">
