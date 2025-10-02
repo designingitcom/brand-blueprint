@@ -42,7 +42,7 @@ import {
 } from '@/app/actions/businesses';
 import { useRouter } from 'next/navigation';
 
-// Schema that matches the exact database structure
+// Schema that matches the exact database structure and onboarding Q1-Q6
 const businessSchema = z.object({
   name: z
     .string()
@@ -50,13 +50,20 @@ const businessSchema = z.object({
     .max(100, 'Name must be less than 100 characters'),
   slug: z.string().optional(),
   organization_id: z.string().min(1, 'Organization is required'),
-  type: z.string().optional(),
-  description: z.string().optional(),
-  website: z
+  business_type: z.string().optional(),  // Q5: B2B, B2C, etc.
+  industry: z.string().optional(),       // Q3: Industry
+  description: z.string().optional(),    // Q7: Company description
+  website_url: z
     .string()
     .url('Please enter a valid URL')
     .optional()
-    .or(z.literal('')),
+    .or(z.literal('')),                   // Q2: Website URL
+  website_context: z.string().optional(), // Q2: Website context
+  linkedin_url: z
+    .string()
+    .url('Please enter a valid LinkedIn URL')
+    .optional()
+    .or(z.literal('')),                   // Q4: LinkedIn URL
   logo_url: z.string().optional(),
   status: z.enum(['active', 'inactive', 'suspended', 'archived']).optional(),
 });
@@ -69,9 +76,12 @@ interface BusinessFormProps {
     name?: string;
     slug?: string;
     organization_id?: string;
-    type?: string;
+    business_type?: string;
+    industry?: string;
     description?: string;
-    website?: string;
+    website_url?: string;
+    website_context?: string;
+    linkedin_url?: string;
     logo_url?: string;
     status?: string;
   };
@@ -109,9 +119,12 @@ export function BusinessForm({
       name: business?.name || '',
       slug: business?.slug || '',
       organization_id: business?.organization_id || organizationId || '',
-      type: business?.type || '',
+      business_type: business?.business_type || '',
+      industry: business?.industry || '',
       description: business?.description || '',
-      website: business?.website || '',
+      website_url: business?.website_url || '',
+      website_context: business?.website_context || '',
+      linkedin_url: business?.linkedin_url || '',
       logo_url: business?.logo_url || '',
       status: business?.status || 'active',
     },
@@ -129,13 +142,16 @@ export function BusinessForm({
         const updateData: UpdateBusinessData = {
           name: data.name,
           slug: data.slug || undefined,
-          type: data.type || undefined,
+          business_type: data.business_type || undefined,
+          industry: data.industry || undefined,
           description: data.description || undefined,
-          website: data.website || undefined,
+          website_url: data.website_url || undefined,
+          website_context: data.website_context || undefined,
+          linkedin_url: data.linkedin_url || undefined,
           logo_url: data.logo_url || undefined,
           status: data.status || undefined,
         };
-        
+
         result = await updateBusiness(business.id, updateData);
       } else {
         // Create new business
@@ -143,9 +159,12 @@ export function BusinessForm({
           name: data.name,
           slug: data.slug || undefined,
           organization_id: data.organization_id,
-          type: data.type || undefined,
+          business_type: data.business_type || undefined,
+          industry: data.industry || undefined,
           description: data.description || undefined,
-          website: data.website || undefined,
+          website_url: data.website_url || undefined,
+          website_context: data.website_context || undefined,
+          linkedin_url: data.linkedin_url || undefined,
           logo_url: data.logo_url || undefined,
           status: data.status || 'active',
         };
@@ -308,16 +327,71 @@ export function BusinessForm({
               />
 
 
-              {/* Website */}
+              {/* Website URL (Q2) */}
               <FormField
                 control={form.control}
-                name="website"
+                name="website_url"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Website</FormLabel>
                     <FormControl>
                       <Input placeholder="https://example.com" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* LinkedIn URL (Q4) */}
+              <FormField
+                control={form.control}
+                name="linkedin_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>LinkedIn Profile</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://linkedin.com/company/example" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Industry (Q3) */}
+              <FormField
+                control={form.control}
+                name="industry"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Industry</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Technology, Healthcare" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Business Type (Q5) */}
+              <FormField
+                control={form.control}
+                name="business_type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Business Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select business type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="B2B">B2B</SelectItem>
+                        <SelectItem value="B2C">B2C</SelectItem>
+                        <SelectItem value="B2B2C">B2B2C</SelectItem>
+                        <SelectItem value="Marketplace">Marketplace</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

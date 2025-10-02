@@ -46,6 +46,7 @@ logs
 dev-debug.log
 # Dependency directories
 node_modules/
+node_modules_backup/
 # Environment variables
 .env
 # Editor directories and files

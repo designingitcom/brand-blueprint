@@ -15,9 +15,13 @@ export interface CreateBusinessData {
   name: string;
   slug?: string;
   organization_id: string;
-  type?: string;
-  description?: string;
-  website?: string;
+  business_type?: string;  // Q5: B2B, B2C, etc.
+  description?: string;    // Q7: Company description
+  website_url?: string;    // Q2: Website URL
+  website_context?: string; // Q2: Website context
+  industry?: string;       // Q3: Industry
+  linkedin_url?: string;   // Q4: LinkedIn URL
+  files_uploaded?: string[]; // Q6: Brand assets
   logo_url?: string;
   status?: BusinessStatus;
   settings?: Record<string, any>;
@@ -26,9 +30,13 @@ export interface CreateBusinessData {
 export interface UpdateBusinessData {
   name?: string;
   slug?: string;
-  type?: string;
-  description?: string;
-  website?: string;
+  business_type?: string;  // Q5: B2B, B2C, etc.
+  description?: string;    // Q7: Company description
+  website_url?: string;    // Q2: Website URL
+  website_context?: string; // Q2: Website context
+  industry?: string;       // Q3: Industry
+  linkedin_url?: string;   // Q4: LinkedIn URL
+  files_uploaded?: string[]; // Q6: Brand assets
   logo_url?: string;
   status?: BusinessStatus;
   settings?: Record<string, any>;

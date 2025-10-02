@@ -51,8 +51,15 @@ export async function saveOnboardingProgress({ businessId, data, questionNumber,
       willSave: cleanedBusinessTypes.length > 0 ? cleanedBusinessTypes[0] : null
     });
 
+    // Generate slug from business name
+    const slug = data.businessName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
     const updateData: any = {
       name: data.businessName,
+      slug: slug, // Auto-generate slug from name
       website_url: data.website,
       website_context: data.websiteContext ? data.websiteContext.join(', ') : null,
       industry: data.customIndustry || data.industry,
@@ -63,8 +70,9 @@ export async function saveOnboardingProgress({ businessId, data, questionNumber,
       updated_at: new Date().toISOString(),
     };
 
-    // Add organization_id if provided (typically on Q1)
-    if (organizationId !== undefined) {
+    // Add organization_id ONLY if explicitly provided (on Q1)
+    // Don't overwrite existing org with null on subsequent questions
+    if (organizationId !== undefined && organizationId !== null) {
       updateData.organization_id = organizationId;
     }
 
@@ -244,6 +252,39 @@ export async function getOrCreateBusiness() {
 
   } catch (error) {
     console.error('❌ Error in getOrCreateBusiness:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Mark onboarding as completed for a business
+ */
+export async function completeOnboarding(businessId: string) {
+  try {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+      .from('businesses')
+      .update({
+        onboarding_completed: true,
+        onboarding_completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', businessId);
+
+    if (error) {
+      console.error('❌ Failed to mark onboarding as completed:', error);
+      return { success: false, error: 'Failed to update onboarding status' };
+    }
+
+    console.log(`✅ Onboarding completed for business ${businessId}`);
+    return { success: true };
+
+  } catch (error) {
+    console.error('❌ Error completing onboarding:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
